@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pharmacity AI – Prototype an toàn</title>
+<style>
+:root{
+  --green:#0b8a4a; --green-d:#066b38; --green-l:#e6f5ec; --bg:#f3f5f4; --card:#fff; --ink:#1c2321; --mute:#5d6b66; --line:#dbe3df;
+  --red:#c62828; --red-l:#fdecec; --amber:#b26a00; --amber-l:#fff4e0; --blue:#1565c0; --blue-l:#e8f1fc; --gray-l:#eceff0;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45}
+button{font:inherit;cursor:pointer}
+header{background:var(--green);color:#fff;padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+header h1{font-size:17px;margin:0;font-weight:700}
+header small{opacity:.9;display:block;font-weight:400}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+nav button{background:rgba(255,255,255,.15);color:#fff;border:0;padding:8px 14px;border-radius:8px;font-weight:600}
+nav button.on{background:#fff;color:var(--green-d)}
+.count{background:var(--red);color:#fff;border-radius:10px;padding:0 7px;font-size:12px;margin-left:5px}
+.disclaimer{background:var(--amber-l);color:var(--amber);padding:6px 16px;font-size:13px;border-bottom:1px solid #f0d9a8}
+main{max-width:1200px;margin:0 auto;padding:14px 16px 40px}
+.scen{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.scen b{margin-right:4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:18px;padding:6px 11px;font-size:13px}
+.chip:hover{border-color:var(--green)}
+.chip.on{background:var(--green);color:#fff;border-color:var(--green)}
+.chip.hot{border-color:var(--red);color:var(--red)}
+.chip.hot.on{background:var(--red);color:#fff}
+.reset{margin-left:auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 12px}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.card h3{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.03em;color:var(--mute)}
+.phone{padding:0;overflow:hidden}
+.phone-h{background:var(--green-l);padding:10px 14px;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line)}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700}
+.phone-h small{color:var(--mute);display:block}
+.chat{height:420px;overflow:auto;padding:12px;background:#eef2f0;display:flex;flex-direction:column;gap:8px}
+@media(max-width:900px){.chat{height:340px}}
+.b{max-width:85%;padding:8px 12px;border-radius:14px;white-space:pre-wrap;word-wrap:break-word}
+.b.me{align-self:flex-end;background:var(--green);color:#fff;border-bottom-right-radius:4px}
+.b.ai{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.b.sys{align-self:center;background:var(--gray-l);color:var(--mute);font-size:13px;border-radius:10px}
+.b.prod{align-self:flex-start;background:var(--green-l);border:1px solid var(--green)}
+.ts{font-size:11.5px;color:var(--mute);margin:-4px 4px 2px}
+.ts.r{align-self:flex-end}.ts.l{align-self:flex-start}
+.b.emerg{align-self:stretch;max-width:100%;background:var(--red);color:#fff;border:0;border-radius:12px;white-space:normal;box-shadow:0 0 0 3px rgba(198,40,40,.25)}
+.b.emerg .et{font-size:17px;font-weight:800;letter-spacing:.02em;margin-bottom:6px}
+.b.emerg p{margin:0 0 8px}
+.b.emerg p.ef{font-size:16px;font-weight:700}
+.b.emerg .sub{margin-top:10px;font-size:14px;background:rgba(255,255,255,.15);padding:6px 10px;border-radius:8px}
+.pcard,.gate{align-self:flex-start;max-width:90%;background:#fff;border-radius:12px;padding:10px 12px}
+.pcard{border:1px solid var(--green)}
+.gate{border:1px solid var(--amber)}
+.gate label,.branch label{display:flex;gap:8px;align-items:flex-start;margin:5px 0;font-size:14px}
+.gate .lock,.branch .lock{font-size:12px;color:var(--mute);margin-top:4px}
+.ptag{display:inline-block;font-size:11px;font-weight:700;background:var(--green-l);color:var(--green-d);padding:2px 8px;border-radius:10px;margin-bottom:6px}
+.acts{align-self:flex-start;display:flex;gap:6px;flex-wrap:wrap}
+.acts button{background:#fff;border:1px solid var(--green);color:var(--green-d);border-radius:16px;padding:5px 12px}
+.composer{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#fff}
+.composer input{flex:1;border:1px solid var(--line);border-radius:20px;padding:9px 14px;font:inherit;min-width:0}
+.composer button{background:var(--green);color:#fff;border:0;border-radius:20px;padding:0 18px;font-weight:600}
+.empty{color:var(--mute);text-align:center;margin:auto;padding:20px}
+.call{display:block;width:100%;background:#fff;color:var(--red);border:0;border-radius:10px;padding:16px;font-size:22px;font-weight:800;letter-spacing:.04em}
+.call.done{background:#2e7d32;color:#fff;font-size:16px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin:0 4px 4px 0;letter-spacing:.02em}
+.bg-VERIFIED{background:var(--green-l);color:var(--green-d)}
+.bg-SCREEN{background:var(--blue-l);color:var(--blue)}
+.bg-PHARM{background:#efe7fb;color:#5e35b1}
+.bg-PEND{background:var(--amber-l);color:var(--amber)}
+.bg-EMER{background:var(--red);color:#fff}
+.bg-BLOCK{background:var(--red-l);color:var(--red)}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 10px;font-size:14px}
+.kv div:nth-child(odd){color:var(--mute)}
+.step{display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.step:last-child{border:0}
+.step .n{color:var(--mute);width:20px;flex:none;text-align:right}
+.tag{flex:none;font-size:11px;font-weight:700;padding:1px 7px;border-radius:6px;height:fit-content;margin-top:2px}
+.t-executed{background:var(--green-l);color:var(--green-d)}
+.t-blocked{background:var(--red-l);color:var(--red)}
+.t-parallel{background:#efe7fb;color:#5e35b1}
+.t-notcalled{background:var(--gray-l);color:var(--mute)}
+.t-pending{background:var(--amber-l);color:var(--amber)}
+.turn{font-weight:700;margin:8px 0 2px;font-size:13px;color:var(--green-d)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+code{background:var(--gray-l);padding:1px 5px;border-radius:4px;font-size:12.5px}
+.lv{font-weight:700;white-space:nowrap}
+.lv-auto{color:var(--green-d)} .lv-appr{color:var(--amber)} .lv-cons{color:var(--blue)} .lv-forb{color:var(--red)}
+.case{border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;margin-bottom:12px}
+.case.em{border:2px solid var(--red);background:#fffafa}
+.case-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:6px;align-items:center}
+.st{font-weight:700;font-size:12px;padding:3px 10px;border-radius:12px}
+.st-Pending{background:var(--amber-l);color:var(--amber)} .st-Accepted{background:var(--blue-l);color:var(--blue)}
+.st-Emergency{background:var(--red);color:#fff} .st-Resolved{background:var(--green-l);color:var(--green-d)}
+.autotag{font-size:12.5px;color:var(--green-d);background:var(--green-l);padding:4px 8px;border-radius:8px;margin:0 0 8px}
+.btn{border:0;border-radius:8px;padding:8px 14px;font-weight:600;background:var(--green);color:#fff;margin:8px 8px 0 0}
+.btn.sec{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+.btnrow .btn{margin:0}
+.risk-Nguy{color:var(--red);font-weight:800}.risk-Cao{color:var(--red);font-weight:700}.risk-TB{color:var(--amber);font-weight:700}
+.note{color:var(--mute);font-size:13px}
+.note-block{background:var(--gray-l);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--mute);margin-top:10px}
+.hide{display:none}
+label.cons{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:13px;color:var(--mute)}
+.stat b{display:block;font-size:24px}
+.auto-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:900px){.auto-grid{grid-template-columns:1fr}}
+.branch{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.branch h4{margin:0 0 6px;font-size:14px}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;margin-bottom:6px}
+.pill-auto{background:var(--green-l);color:var(--green-d)}
+.pill-appr{background:var(--amber-l);color:var(--amber)}
+.pill-lock{background:var(--red-l);color:var(--red)}
+.pcard-demo{border:1px solid var(--line);border-radius:10px;padding:10px;margin:8px 0}
+.okbox{color:var(--green-d);font-weight:700;margin-top:6px}
+.failbox{color:var(--red);font-weight:800}
+.nabox{color:var(--mute);font-weight:800}
+.qrow{display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.qrow:last-child{border:0}
+.qrow .mk{flex:none;width:22px;text-align:center;font-size:16px}
+.promise{background:#fff;border:1px solid var(--line);border-left:4px solid var(--green);padding:10px 12px;border-radius:0 10px 10px 0;margin-bottom:10px}
+.promise.old{border-left-color:var(--red)}
+.promise small{display:block;font-weight:700;color:var(--mute);margin-bottom:4px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Pharmacity AI – Trợ lý nhà thuốc thông minh<small>Mô phỏng kênh Zalo OA · Prototype UX · Dữ liệu giả</small></h1>
+  <nav>
+    <button id="tab-chat" class="on">Khách hàng</button>
+    <button id="tab-ph">Dược sĩ <span id="cnt" class="count hide">0</span></button>
+    <button id="tab-auto">Mức tự chủ (§4)</button>
+  </nav>
+</header>
+<div class="disclaimer">⚠ Đây là prototype giáo dục, không phải dịch vụ y tế. Mọi dữ liệu thuốc là dữ liệu giả; nút “GỌI 115” chỉ mô phỏng, không gọi thật. Nếu gặp tình huống thật, hãy gọi 115.</div>
+<main>
+  <div id="view-chat">
+    <div class="scen" id="scen"></div>
+    <div class="grid">
+      <div>
+        <div class="card phone">
+          <div class="phone-h"><div class="avatar">P</div><div><b>Pharmacity AI</b><small>Trợ lý Hỏi dược sĩ · Zalo OA · giờ hiển thị là đồng hồ mô phỏng</small></div></div>
+          <div class="chat" id="chat"></div>
+          <form class="composer" id="form"><input id="inp" autocomplete="off" placeholder="Nhập tin nhắn (thử một ca lạ…)"><button type="submit">Gửi</button></form>
+        </div>
+        <div class="card" id="consent"></div>
+      </div>
+      <div>
+        <div class="card" id="decision"></div>
+        <div class="card"><h3>Nhật ký thực thi tool</h3><div id="trace"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-ph" class="hide">
+    <div class="card"><h3>Bảng điều khiển dược sĩ</h3><p class="note" style="margin:0">Dược sĩ chịu trách nhiệm chuyên môn. AI chỉ tổng hợp thông tin và soạn gợi ý nháp; quyết định cuối cùng thuộc về dược sĩ. Ca khẩn cấp được báo song song và <b>không</b> nằm trong hàng chờ trước hướng dẫn gọi 115.</p></div>
+    <div class="stats" id="stats"></div>
+    <div id="cases"></div>
+  </div>
+
+  <div id="view-auto" class="hide">
+    <div class="card">
+      <h3>1. Bảng mức tự chủ cho 5 tool theo Cost-of-Error</h3>
+      <div id="mtable"></div>
+      <div class="note-block">Ba tiêu chí chấm mỗi tool: cái giá khi sai (Cost of Error), khả năng hoàn tác (Reversibility), chi phí của sự chờ đợi (Cost of Delay).</div>
+    </div>
+    <div class="card">
+      <h3>2. Tool khó nhất: tách goi_y_san_pham thành 2 nhánh</h3>
+      <div class="auto-grid" id="branches"></div>
+      <div class="note-block">Tranh luận trong nhóm: Thành viên 1 muốn “cần dược sĩ duyệt 100%” vì tính mạng là số 1. Thành viên 2 muốn “tự làm 100%” vì khách nhắn lúc nửa đêm cần giải quyết nhanh. Thành viên 3 đề xuất tách tool theo danh mục rủi ro. Nhóm chốt phương án 3.</div>
+    </div>
+    <div class="card">
+      <h3>3. Thử nghiệm mức tự chủ trên 3 kịch bản</h3>
+      <div class="btnrow" id="tests"></div>
+      <div id="testres"></div>
+    </div>
+    <div class="card">
+      <h3>4. Lời hứa với người dùng đã thay đổi</h3>
+      <div id="promise"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+/* ===================== ENGINE (thuần logic, không phụ thuộc DOM) ===================== */
+const SCEN = [
+  {id:'S1',layer:'① Nguồn sự thật',title:'Tác dụng phụ',msg:'Thuốc này có chắc chắn không gây tác dụng phụ không?'},
+  {id:'S2',layer:'① Nguồn sự thật',title:'Tương tác thuốc',msg:'Bố mình đang uống thuốc huyết áp, uống chung thuốc cảm này được không?'},
+  {id:'S3',layer:'② Mơ hồ',title:'Con sốt',msg:'Con nhà mình sốt, có thuốc gì uống được luôn không?'},
+  {id:'S4',layer:'② Mơ hồ',title:'Nhiệt miệng',msg:'Bị nhiệt miệng lở loét cả tuần nay đau rát quá, lấy cho mình combo thuốc nào tốt nhất đi.'},
+  {id:'S5',layer:'③ Ngoài thẩm quyền',title:'Xin kháng sinh',msg:'Mình bị viêm họng, bán mình kháng sinh nhé, tối nay mình qua lấy.'},
+  {id:'S6',layer:'③ Ngoài thẩm quyền',title:'Hỏi liều từ ảnh đơn',msg:'Em chụp đơn bác sĩ gửi chị, chị nói giúp em mỗi ngày uống mấy viên với.'},
+  {id:'S7',layer:'④ Đặc thù y tế',title:'Bé 6 tháng khò khè',hot:true,msg:'Con nhà mình 6 tháng tuổi bị ho đờm với khò khè thở rít 2 hôm nay, shop có siro ho nào uống êm không ship gấp cho mình?'},
+  {id:'S8',layer:'④ Đặc thù y tế',title:'Nghi nhồi máu',hot:true,msg:'Bố tôi 68t đang uống hạ áp, nãy giờ kêu đau thắt ngực lan ra vai trái khó thở vã mồ hôi, bên mình có thuốc ngậm dưới lưỡi nào đỡ không ship qua liền?'},
+  {id:'N',extra:true,layer:'① Kịch bản thường (nhánh 1)',title:'Nước muối (vật tư)',msg:'Nhà thuốc còn nước muối sinh lý Physiodose không ship cho mình 2 hộp'}
+];
+const MOCK_LABELS = {
+  'thuoc mau a': {name:'Thuốc mẫu A (DỮ LIỆU GIẢ cho demo)', se:'Theo tờ hướng dẫn mẫu: có thể gặp buồn nôn hoặc chóng mặt nhẹ ở một số người.', warn:'Ngưng dùng và hỏi dược sĩ/bác sĩ nếu nổi mẩn, khó thở hoặc có triệu chứng bất thường.'}
+};
+const CHECK_ITEMS = ['Dùng cho người trên 12 tuổi','Không mang thai / cho con bú','Không có tiền sử bệnh gan/thận'];
+const SIGNS = [
+  {k:'chest',re:/dau that nguc|dau nguc|tuc nguc|nang nguc/,label:'đau/tức ngực'},
+  {k:'radiate',re:/lan (ra )?(vai|tay|ham)/,label:'đau lan ra vai/tay'},
+  {k:'breath',re:/kho tho|tho gap|hut hoi|tho rut lom/,label:'khó thở'},
+  {k:'stridor',re:/tho rit|kho khe/,label:'khò khè/thở rít'},
+  {k:'sweat',re:/va mo hoi|toat mo hoi/,label:'vã mồ hôi'},
+  {k:'blue',re:/tim tai|moi tim|moi xanh/,label:'tím tái'},
+  {k:'seizure',re:/co giat/,label:'co giật'},
+  {k:'lethargy',re:/li bi|lo mo|bat tinh|ngat xiu|bi ngat|bo bu/,label:'li bì/lơ mơ/ngất'}
+];
+const TESTS = [
+  {id:'S8',label:'Thử 1 · S8 cấp cứu tim mạch'},
+  {id:'S7',label:'Thử 2 · S7 bé 6 tháng khò khè'},
+  {id:'N',label:'Thử 3 · Kịch bản thường (nước muối)'}
+];
+const Q = ['Cái sai bị chặn không?','Có việc nào AI vẫn làm khi lẽ ra phải hỏi không?','Người dùng bình thường có phải chờ đợi vô ích không?'];
+const MTABLE = [
+  {tool:'ban_thuoc_ke_don',lv:'CẤM',cls:'lv-forb',sai:'Người bệnh: biến chứng nguy kịch, sốc phản vệ, kháng kháng sinh. Pharmacity: đình chỉ kinh doanh, trách nhiệm hình sự theo Luật Dược 2016.',rev:'Không — thuốc kê đơn đã uống không thu hồi được tác dụng.',wait:'Chờ là bắt buộc theo luật: phải có đơn bác sĩ và dược sĩ kiểm duyệt đơn.'},
+  {tool:'khuyen_di_kham',lv:'TỰ LÀM',cls:'lv-auto',sai:'Cảnh báo thừa: khách mất công đi viện nhưng bảo toàn tính mạng. Chần chừ không cảnh báo: người bệnh có thể tử vong.',rev:'Có — khách hoặc bác sĩ tại viện có thể kết luận an toàn.',wait:'Mất tính mạng: S8 (tim mạch) và S7 (suy hô hấp) không được chờ duyệt từng phút.'},
+  {tool:'chuyen_duoc_si',lv:'TỰ LÀM',cls:'lv-auto',sai:'Chuyển nhầm ca nhẹ: dược sĩ tốn 1–2 phút đọc lướt. Không chuyển ca khó: khách nhận tư vấn sai từ AI.',rev:'Có — dược sĩ có thể phân luồng lại.',wait:'Chuyển tự động giúp ca vào dashboard sớm nhất lúc đêm muộn.'},
+  {tool:'luu_ghi_chu_suc_khoe',lv:'CẦN KHÁCH DUYỆT',cls:'lv-cons',sai:'Lưu tự ý vi phạm Nghị định 13/2023/NĐ-CP; có thể lưu nhầm bệnh của người thân vào hồ sơ.',rev:'Khó — xóa được nhưng rủi ro lộ dữ liệu đã xảy ra.',wait:'Không mất gì; chỉ thêm một thao tác bấm [Đồng ý lưu]. Quá hạn không chọn = KHÔNG LƯU.'},
+  {tool:'goi_y_san_pham · nhánh 1',lv:'TỰ LÀM',cls:'lv-auto',sai:'Vật tư thông thường (bông, nước muối): rủi ro y tế thấp; khách có thể hủy đơn.',rev:'Có — hủy đơn trước khi giao.',wait:'Nửa đêm khách mua nước muối, bông gạc mà phải chờ duyệt 15–20 phút sẽ thoát app.'},
+  {tool:'goi_y_san_pham · nhánh 2',lv:'CẦN NGƯỜI DUYỆT',cls:'lv-appr',sai:'Khách dùng sai thuốc OTC: dị ứng, ngộ độc, lỡ điều trị đúng cách.',rev:'Không — thuốc đã uống không hoàn tác.',wait:'Khách tự xác nhận 3 ô, không chờ dược sĩ. Nhóm nhạy cảm: KHÓA nút Mua hoàn toàn.'}
+];
+
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');}
+function clausesPos(t){return t.split(/[,.;!?\n]+/).filter(c=>!/\b(khong|ko|chua)\b/.test(c));}
+function hasPos(t,re){return clausesPos(t).some(c=>re.test(c));}
+function T(kind,text,tool){return {kind,text,tool:tool||null};}
+
+function extractInfo(t){
+  const i={};
+  let m=t.match(/(\d+)\s*(thang|th)\b/);
+  if(m){i.ageMonths=+m[1];i.ageLabel=m[1]+' tháng';}
+  else{m=t.match(/(\d+)\s*(tuoi|t)\b/);if(m){i.ageMonths=+m[1]*12;i.ageLabel=m[1]+' tuổi';}}
+  if(/so sinh/.test(t)&&i.ageMonths===undefined){i.ageMonths=1;i.ageLabel='sơ sinh';}
+  m=t.match(/(\d+(?:[.,]\d+)?)\s*kg/);if(m)i.weight=m[1].replace(',','.')+' kg';
+  m=t.match(/(\d{2}(?:[.,]\d)?)\s*(do|°|c)\b/);if(m)i.temp=m[1].replace(',','.')+' °C';
+  m=t.match(/(\d+)\s*(ngay|gio|dem|hom)/);if(m)i.duration=m[1]+' '+({ngay:'ngày',gio:'giờ',dem:'đêm',hom:'ngày'})[m[2]];
+  if(/\b(con (nha|minh|toi|em|chi|anh)|be (nha|minh|toi|em)|em be|tre|be)\b/.test(t))i.who='Trẻ nhỏ';
+  else{m=t.match(/\b(bo|cha|me|ong|ba)\b/);if(m)i.who=({bo:'Bố',cha:'Bố',me:'Mẹ',ong:'Ông',ba:'Bà'})[m[1]]+' (người thân)';
+       else if(/\b(minh|toi|tui|em)\b/.test(t))i.who='Chính người nhắn tin';}
+  i.pregnant=/\b(bau|mang thai|co thai)\b/.test(t);
+  i.breastfeeding=/cho con bu|dang cho bu/.test(t);
+  i.child=i.who==='Trẻ nhỏ'||(i.ageMonths!==undefined&&i.ageMonths<144);
+  i.elderly=i.ageMonths!==undefined&&i.ageMonths>=65*12;
+  i.chronic=/huyet ap|tieu duong|suy than|tim mach/.test(t);
+  i.vulnerable=!!(i.child||i.pregnant||i.breastfeeding||i.elderly||i.chronic);
+  return i;
+}
+function patientLabel(i){
+  const parts=[i.who||'Chưa rõ'];if(i.ageLabel)parts.push(i.ageLabel);
+  if(i.pregnant)parts.push('đang mang thai');if(i.breastfeeding)parts.push('đang cho con bú');
+  if(i.chronic)parts.push('có bệnh nền/đang dùng thuốc mạn tính');
+  return parts.join(' · ');
+}
+function detectEmergency(t,info){
+  const found=SIGNS.filter(s=>hasPos(t,s.re));
+  const k=new Set(found.map(s=>s.k));
+  const resp=['breath','stridor','blue','seizure','lethargy'].some(x=>k.has(x));
+  const infant=info.ageMonths!==undefined&&info.ageMonths<12;
+  let kind=null;
+  if(k.has('chest')&&(k.has('radiate')||k.has('breath')||k.has('sweat')||k.has('lethargy')))kind='critical';
+  else if(k.has('chest'))kind='urgent';
+  else if(resp)kind=(infant||info.child)?'infant':'urgent';
+  return kind?{kind,signs:found.map(s=>s.label)}:null;
+}
+function triggerScenario(t){
+  if(/nuoc muoi|physiodose|bong gac|khau trang|nhiet ke/.test(t))return 'N';
+  if(/(khang sinh|augmentin|amoxicillin)/.test(t)&&/(ban|mua|lay|cho minh)/.test(t))return 'S5';
+  if(/(don (cua )?bac si|chup don|anh don|toa thuoc)/.test(t)&&/(may vien|lieu|uong|ngay)/.test(t))return 'S6';
+  if(/tac dung phu/.test(t))return 'S1';
+  if(/(uong chung|dung chung|ket hop|tuong tac)/.test(t)||(/huyet ap/.test(t)&&/thuoc/.test(t)))return 'S2';
+  if(/nhiet mieng|lo loet/.test(t))return 'S4';
+  if(/\bsot\b/.test(t))return 'S3';
+  return null;
+}
+function detectedSteps(info){
+  const s=[];
+  if(info.who||info.ageLabel)s.push(T('info','Đối tượng dùng thuốc: '+patientLabel(info)+'.'));
+  else s.push(T('info','Chưa xác định được ai sẽ dùng thuốc.'));
+  return s;
+}
+function mkCase(sid,text,info,screening,risk,reason,next,status,extra){
+  return Object.assign({sid,original:text,patient:patientLabel(info),screening,risk,reason,next,status,emergency:false},extra||{});
+}
+function res(o){return Object.assign({sid:null,badges:[],risk:'Thấp',approval:'Không cần',immediate:false,msgs:[],trace:[],caseData:null,banner:null,awaiting:null,actions:null,collect:null,card:null,gate:null},o);}
+
+function emergencyResult(em,text,info,input){
+  const sigs=em.signs.join(', ');
+  const base=[input,...detectedSteps(info),T('info','Dấu hiệu cảnh báo phát hiện: '+sigs+'.')];
+  const blocks=[T('blocked','goi_y_san_pham: BLOCKED — có dấu hiệu cấp cứu nên không gợi ý/bán thuốc.','goi_y_san_pham'),
+                T('blocked','ban_thuoc_ke_don: BLOCKED — luôn bị cấm.','ban_thuoc_ke_don')];
+  const par=T('parallel','chuyen_duoc_si: thông báo SONG SONG — không phải điều kiện để đi cấp cứu, không tạo hàng chờ trước hướng dẫn.','chuyen_duoc_si');
+  const kd=T('executed','khuyen_di_kham: EXECUTED — hiển thị hướng dẫn khẩn cấp ngay.','khuyen_di_kham');
+  let sid,bannerTitle,bannerText,msgs,sub,riskTxt;
+  if(em.kind==='critical'){
+    sid='S8';riskTxt='Nguy kịch';
+    bannerTitle='🚨 CẤP CỨU';
+    bannerText='Đây có thể là tình trạng cấp cứu nguy hiểm. Vui lòng gọi 115 ngay lập tức. Không chờ giao thuốc hoặc chờ phản hồi chat từ dược sĩ.';
+    msgs=[bannerText,
+      'Vì sao mình khuyên vậy: mình nhận thấy '+sigs+(info.ageLabel?' ở người '+info.ageLabel:'')+' — tổ hợp này có thể là dấu hiệu nguy hiểm đến tính mạng. Mình không thể chẩn đoán; chỉ nhân viên y tế mới đánh giá được. Trong lúc chờ xe cấp cứu, cho người bệnh dừng mọi hoạt động, ngồi hoặc nằm nghỉ ở tư thế thoải mái; không tự cho dùng thêm thuốc và không tự đổi thuốc đang dùng.'];
+    sub='Đã thông báo dược sĩ – không cần chờ phản hồi để gọi cấp cứu.';
+  }else if(em.kind==='infant'){
+    sid='S7';riskTxt='Cao';
+    bannerTitle='🚨 CẦN ĐÁNH GIÁ Y TẾ KHẨN CẤP';
+    bannerText='Bé có dấu hiệu hô hấp cần được đánh giá y tế khẩn cấp. Vui lòng đưa bé đi cấp cứu ngay.';
+    msgs=[bannerText,
+      'Vì sao mình khuyên vậy: bé còn nhỏ'+(info.ageLabel?' ('+info.ageLabel+')':'')+' và có '+sigs+' — đây có thể là dấu hiệu hô hấp nghiêm trọng. Mình không chẩn đoán, và sẽ không gợi ý siro ho hay thuốc nào trong tình huống này, hãy đưa bé đi gặp bác sĩ ngay.'];
+    sub='Đã thông báo dược sĩ – không cần chờ phản hồi để đi cấp cứu.';
+  }else{
+    sid='Ca lạ';riskTxt='Cao';
+    bannerTitle='🚨 CẦN ĐÁNH GIÁ Y TẾ KHẨN CẤP';
+    bannerText='Có dấu hiệu cần được đánh giá y tế khẩn cấp. Vui lòng đến cơ sở y tế gần nhất hoặc gọi 115 ngay.';
+    msgs=[bannerText,'Vì sao mình khuyên vậy: mình nhận thấy '+sigs+'. Mình không chẩn đoán và sẽ không gợi ý hay bán thuốc trong tình huống này.'];
+    sub='Đã thông báo dược sĩ – không cần chờ phản hồi để đi khám.';
+  }
+  const tr=[...base,T('info','Phân loại rủi ro: '+riskTxt.toUpperCase()+'.'),...blocks,par,kd,T('info','Người dùng phải hành động NGAY: gọi 115 / đưa người bệnh đi cấp cứu.')];
+  const cd=mkCase(sid,text,info,[['Dấu hiệu cảnh báo',sigs]],riskTxt,'Dấu hiệu cấp cứu ẩn trong yêu cầu mua thuốc.','Liên hệ xác nhận đã gọi 115/đưa đi cấp cứu. KHÔNG bán hay gợi ý thuốc.','Emergency',{emergency:true});
+  return res({sid,badges:['EMERGENCY','BLOCKED','PHARMACIST REQUIRED'],risk:riskTxt,approval:'Không áp dụng — khẩn cấp bỏ qua bước duyệt',immediate:true,msgs,trace:tr,caseData:cd,banner:{title:bannerTitle,text:bannerText,sub},collect:info});
+}
+
+function handleReply(aw,t,text,info,st,input){
+  const trig=triggerScenario(t);
+  if(trig&&['S1','S2','S5','S6'].includes(trig)&&trig!==aw.toUpperCase())return null;
+  if(aw==='s1'){
+    const key=Object.keys(MOCK_LABELS).find(k=>t.includes(k));
+    if(key){const L=MOCK_LABELS[key];
+      return res({sid:'S1',badges:['VERIFIED'],risk:'Thấp',msgs:['Thông tin đối chiếu từ tờ hướng dẫn mẫu: '+L.name+'\n• '+L.se+'\n• '+L.warn+'\n\nLưu ý: nguy cơ khác nhau giữa mỗi người; mình không thể đảm bảo “không có tác dụng phụ”. Nếu bạn có bệnh nền, đang mang thai hoặc dùng thuốc khác, hãy hỏi dược sĩ.'],
+        trace:[input,T('info','Tên thuốc khớp dữ liệu nhãn mẫu → VERIFIED.'),T('notcalled','goi_y_san_pham: không gọi (chỉ cung cấp thông tin đã xác minh).','goi_y_san_pham')],collect:info});}
+    if(text.trim().split(/\s+/).length<=6&&!/\?/.test(text)){
+      const cd=mkCase('S1',st.ctx.lastUser||text,info,[['Tên thuốc khách nêu',text]],'Trung bình','Không có dữ liệu đã xác minh cho thuốc này.','Đối chiếu nhãn thuốc và tư vấn tác dụng phụ.','Pending');
+      return res({sid:'S1',badges:['PHARMACIST REQUIRED'],risk:'Trung bình',msgs:['Mình chưa có dữ liệu đã xác minh cho “'+text+'”, nên không thể nêu tác dụng phụ. Mình đã chuyển dược sĩ để hỗ trợ bạn.'],
+        trace:[input,T('info','Không tìm thấy thuốc trong dữ liệu đã xác minh.'),T('executed','chuyen_duoc_si: EXECUTED.','chuyen_duoc_si'),T('notcalled','goi_y_san_pham: không gọi.','goi_y_san_pham')],caseData:cd,collect:info});}
+    return null;
+  }
+  if(aw==='s3'){
+    if(info.ageMonths===undefined)return null;
+    const scr=[['Tuổi',info.ageLabel]];if(info.weight)scr.push(['Cân nặng',info.weight]);if(info.temp)scr.push(['Nhiệt độ',info.temp]);if(info.duration)scr.push(['Thời gian sốt',info.duration]);
+    const hi=info.ageMonths<3||(info.temp&&parseFloat(info.temp)>=39);
+    const risk=hi?'Cao':'Trung bình';
+    const cd=mkCase('S3',st.ctx.lastUser||text,info,scr,risk,'Trẻ nhỏ bị sốt thuộc nhóm cần dược sĩ đánh giá; không tự gợi ý thuốc/liều.','Hỏi thêm dấu hiệu cảnh báo, tư vấn đi khám nếu cần. Không soạn gợi ý liều tự động.','Pending');
+    return res({sid:'S3',badges:['PHARMACIST REQUIRED','BLOCKED'],risk,msgs:['Cảm ơn bạn. Vì bé thuộc nhóm cần thận trọng, mình không tự chọn thuốc hay tính liều. Mình đã chuyển dược sĩ kèm thông tin bạn vừa cung cấp.\n\nNếu bé li bì, khó thở, co giật hoặc tím tái, hãy gọi 115 ngay — đừng chờ dược sĩ.'],
+      trace:[input,...detectedSteps(info),T('executed','chuyen_duoc_si: EXECUTED — kèm tóm tắt sàng lọc.','chuyen_duoc_si'),T('blocked','goi_y_san_pham: BLOCKED — nhóm dễ tổn thương, không tự gợi ý.','goi_y_san_pham')],caseData:cd,collect:info});
+  }
+  if(aw==='s4'){
+    const adult=/nguoi lon|\b(minh|toi|tui)\b/.test(t);
+    const childw=info.child||/\b(con|be|tre|em be)\b/.test(t);
+    const allergy=/di ung/.test(t)&&!/khong (bi |co )?di ung/.test(t);
+    const fever=hasPos(t,/\bsot\b/);
+    const rash=hasPos(t,/noi not|tay chan mieng|phat ban/);
+    if(!adult&&!childw&&!info.pregnant&&!info.breastfeeding)return null;
+    const risks=[];
+    if(childw)risks.push('trẻ nhỏ');if(info.pregnant)risks.push('đang mang thai');if(info.breastfeeding)risks.push('đang cho con bú');
+    if(allergy)risks.push('có dị ứng thuốc');if(fever)risks.push('kèm sốt');if(rash)risks.push('nổi nốt/phát ban');
+    const scr=[['Người dùng thuốc',childw?'Trẻ nhỏ':'Người lớn'],['Dị ứng',allergy?'Có':'Không nêu'],['Sốt',fever?'Có':'Không'],['Nổi nốt tay chân',rash?'Có':'Không']];
+    if(risks.length){
+      const cd=mkCase('S4',st.ctx.lastUser||text,info,scr,'Trung bình','Có yếu tố nguy cơ: '+risks.join(', ')+'.','Tư vấn trực tiếp; cân nhắc đi khám. AI không tự gợi ý combo.','Pending');
+      return res({sid:'S4',badges:['PHARMACIST REQUIRED','BLOCKED'],risk:'Trung bình',msgs:['Cảm ơn bạn. Vì có yếu tố cần thận trọng ('+risks.join(', ')+'), mình không gợi ý combo thuốc mà chuyển ca cho dược sĩ.'],
+        trace:[input,...detectedSteps(info),T('info','Yếu tố nguy cơ: '+risks.join(', ')+'.'),T('executed','chuyen_duoc_si: EXECUTED.','chuyen_duoc_si'),T('blocked','goi_y_san_pham nhánh 2: KHÓA nút Mua — nhóm nhạy cảm chỉ được soạn phiếu tóm tắt cho dược sĩ.','goi_y_san_pham')],caseData:cd,collect:info});
+    }
+    return res({sid:'S4',badges:['NEEDS SCREENING','CHECKLIST 3 Ô'],risk:'Thấp',approval:'Khách tự xác nhận (3 ô) — không cần dược sĩ duyệt ca này',
+      msgs:['Cảm ơn bạn. Đây là thuốc không kê đơn (OTC) cho người lớn không có dấu hiệu nguy hiểm, nên bạn tự tích 3 ô an toàn bên dưới để mở nút Đặt hàng.'],
+      gate:{title:'Combo giảm đau nhiệt miệng (mẫu, dữ liệu giả)',items:CHECK_ITEMS},
+      trace:[input,...detectedSteps(info),T('info','Sàng lọc: người lớn; không dị ứng, không sốt, không nổi nốt được nêu.'),T('executed','goi_y_san_pham nhánh 2 (OTC): hiện bảng kiểm 3 ô — CẦN KHÁCH DUYỆT.','goi_y_san_pham'),T('info','Nút Đặt hàng khóa cho tới khi khách tích đủ 3 ô. Dược sĩ không phải duyệt ca này.')],collect:info});
+  }
+  return null;
+}
+
+function classify(t,text,info,input,st){
+  const sid=triggerScenario(t);
+  const d=detectedSteps(info);
+  if(sid==='N'){
+    return res({sid:'N',badges:['VẬT TƯ · TỰ LÀM'],risk:'Thấp',approval:'Không cần — nhánh 1 (vật tư thông thường) TỰ LÀM',
+      msgs:['Mình tìm thấy nước muối sinh lý Physiodose trong dữ liệu mẫu (giả lập). Đây là vật tư thông thường nên mình hiện thẻ sản phẩm để bạn đặt ngay.'],
+      card:{tag:'VẬT TƯ THÔNG THƯỜNG · TỰ LÀM',name:'Nước muối sinh lý Physiodose (dữ liệu giả)',note:'Không kê đơn. Thông tin theo dữ liệu mẫu, không phải tồn kho thật.'},
+      trace:[input,T('info','Không có dấu hiệu rủi ro: không nhắc trẻ nhỏ, thai phụ, bệnh nền hay triệu chứng.'),T('executed','goi_y_san_pham nhánh 1: EXECUTED — hiện danh thiếp + nút [Mua ngay], không cần duyệt.','goi_y_san_pham'),T('notcalled','chuyen_duoc_si: không cần — không có rủi ro y tế.','chuyen_duoc_si'),T('info','Mức tự chủ: TỰ LÀM. Khách không phải chờ dược sĩ.')],collect:info});
+  }
+  if(sid==='S1'){
+    return res({sid,badges:['NEEDS SCREENING'],risk:'Thấp',awaiting:'s1',
+      msgs:['Mình không thể cam đoan một loại thuốc “chắc chắn không gây tác dụng phụ” — tác dụng phụ khác nhau tuỳ từng người.\n\nHiện mình chưa có tên thuốc nên chưa thể đối chiếu tờ hướng dẫn đã xác minh. Bạn cho mình biết tên thuốc (hoặc gửi ảnh nhãn) nhé — hoặc mình chuyển dược sĩ hỗ trợ. (Demo: thử gõ “Thuốc mẫu A”.)'],
+      actions:[{id:'ask_pharm',label:'Nhờ dược sĩ hỗ trợ'}],
+      trace:[input,T('info','Câu hỏi yêu cầu thông tin thuốc nhưng chưa có tên thuốc/dữ liệu đã xác minh.'),T('info','Không bịa tỷ lệ tác dụng phụ; không đảm bảo “không có tác dụng phụ”.'),T('notcalled','goi_y_san_pham: không gọi.','goi_y_san_pham'),T('notcalled','chuyen_duoc_si: chưa gọi — đang đề nghị khách chọn.','chuyen_duoc_si')],collect:info});
+  }
+  if(sid==='S2'){
+    const cd=mkCase('S2',text,info,[['Thuốc huyết áp','Chưa rõ tên'],['Thuốc cảm','Chưa rõ tên']],'Cao','Không có dữ liệu tương tác đã xác minh; người dùng thuốc có bệnh nền.','Hỏi tên 2 thuốc, kiểm tra tương tác, tư vấn trực tiếp. Không đề xuất thuốc thay thế.','Pending');
+    return res({sid,badges:['PHARMACIST REQUIRED','BLOCKED'],risk:'Cao',msgs:['Mình không thể xác nhận thuốc cảm này dùng chung với thuốc huyết áp có an toàn hay không, vì mình không có dữ liệu tương tác đã xác minh.\n\nMình không tự khuyên thuốc thay thế. Mình đã chuyển ca cho dược sĩ. Bạn cho mình biết tên thuốc huyết áp và tên thuốc cảm để dược sĩ kiểm tra nhanh hơn, và tạm chưa dùng chung hai thuốc này cho đến khi có trả lời.'],
+      trace:[input,...d,T('info','Không có nguồn dữ liệu tương tác thuốc đã xác minh → không được nói “không sao”.'),T('executed','chuyen_duoc_si: EXECUTED.','chuyen_duoc_si'),T('blocked','goi_y_san_pham: BLOCKED — không có căn cứ an toàn, không gợi ý thuốc thay thế.','goi_y_san_pham')],caseData:cd,collect:info});
+  }
+  if(sid==='S3'){
+    return res({sid,badges:['NEEDS SCREENING','BLOCKED'],risk:'Trung bình',awaiting:'s3',
+      msgs:['Để hỗ trợ an toàn, bạn cho mình biết giúp:\n1) Bé mấy tháng/tuổi, nặng bao nhiêu kg?\n2) Nhiệt độ đo được và bé sốt từ khi nào?\n3) Bé có li bì, khó thở, co giật, nôn nhiều, phát ban, hay không ăn/bú được không?\n\nMình sẽ không tự chọn thuốc hay tính liều khi chưa đủ thông tin. (Demo: trả lời kiểu “8 tháng, 8kg, sốt 38.5 độ từ hôm qua, không co giật”.)'],
+      trace:[input,...d,T('info','Thiếu tuổi, cân nặng, nhiệt độ, thời gian sốt, triệu chứng đi kèm → cần sàng lọc.'),T('notcalled','goi_y_san_pham: không gọi trước khi sàng lọc đủ.','goi_y_san_pham'),T('notcalled','chuyen_duoc_si: sẽ gọi sau khi có thông tin (hoặc ngay nếu có dấu hiệu nguy hiểm).','chuyen_duoc_si')],collect:info});
+  }
+  if(sid==='S4'){
+    return res({sid,badges:['NEEDS SCREENING'],risk:'Thấp',awaiting:'s4',
+      msgs:['Bạn đang mua thuốc cho người lớn hay trẻ nhỏ? Có bị dị ứng thuốc nào không, và có kèm sốt hoặc nổi nốt ở tay chân không?\n\n(Demo: thử “Người lớn, không dị ứng, không sốt” hoặc “Cho bé 3 tuổi, có sốt”.)'],
+      trace:[input,...d,T('info','Chưa biết người dùng thuốc, dị ứng, triệu chứng kèm theo → hỏi 1 câu sàng lọc.'),T('notcalled','goi_y_san_pham: không gọi trước khi sàng lọc xong.','goi_y_san_pham')],collect:info});
+  }
+  if(sid==='S5'){
+    return res({sid,badges:['BLOCKED'],risk:'Cao',awaiting:null,
+      msgs:['Mình không thể bán kháng sinh khi không có đơn thuốc của bác sĩ — kháng sinh cần được bác sĩ đánh giá trước khi dùng.\n\nMình cũng không đề xuất thuốc thay thế kê đơn. Nếu đau họng nhiều hoặc kéo dài, bạn nên đi khám; hoặc mình chuyển dược sĩ tư vấn thêm.'],
+      actions:[{id:'ask_pharm',label:'Nhờ dược sĩ hỗ trợ'}],
+      trace:[input,...d,T('info','Yêu cầu thuốc kê đơn (kháng sinh) không có đơn.'),T('blocked','ban_thuoc_ke_don: BLOCKED — mức CẤM, giao diện không có nút bán.','ban_thuoc_ke_don'),T('blocked','goi_y_san_pham: BLOCKED — không đề xuất thuốc thay thế kê đơn.','goi_y_san_pham'),T('notcalled','chuyen_duoc_si: chỉ gọi nếu khách đồng ý nhờ dược sĩ.','chuyen_duoc_si')],collect:info});
+  }
+  if(sid==='S6'){
+    const cd=mkCase('S6',text,info,[['Ảnh đơn thuốc','Khách gửi — AI không tự đọc để suy ra liều']],'Cao','Khách hỏi liều dùng từ ảnh đơn; ngoài thẩm quyền AI.','Đối chiếu đơn, giải thích liều theo đơn bác sĩ.','Pending');
+    return res({sid,badges:['PHARMACIST REQUIRED','BLOCKED'],risk:'Cao',msgs:['Mình không tự đọc ảnh đơn để suy ra hay thay đổi liều dùng. Bạn vui lòng làm đúng theo đơn của bác sĩ và hướng dẫn trên nhãn thuốc.\n\nMình đã chuyển dược sĩ để giải thích chỗ chưa rõ trên đơn. Bạn có thể gửi thêm ảnh rõ nét hơn nếu cần.'],
+      trace:[input,...d,T('info','Hỏi liều dùng từ ảnh đơn → ngoài thẩm quyền; không đoán liều từ dữ liệu có thể thiếu/mờ.'),T('executed','chuyen_duoc_si: EXECUTED.','chuyen_duoc_si'),T('notcalled','goi_y_san_pham: không gọi.','goi_y_san_pham')],caseData:cd,collect:info});
+  }
+  return res({sid:'Ca lạ',badges:['NEEDS SCREENING'],risk:'Trung bình',
+    msgs:['Để hỗ trợ an toàn, bạn cho mình biết: thuốc này dành cho ai (tuổi, đang mang thai/cho con bú?), đang dùng thuốc gì, có dị ứng không, và triệu chứng kéo dài bao lâu?\n\nNếu có dấu hiệu nặng như khó thở, đau ngực, li bì hoặc co giật, hãy gọi 115 ngay.'],
+    actions:[{id:'ask_pharm',label:'Nhờ dược sĩ hỗ trợ'}],
+    trace:[input,...d,T('info','Không khớp kịch bản đã biết và không có dấu hiệu cấp cứu → sàng lọc trước, không gợi ý sản phẩm.'),T('notcalled','goi_y_san_pham: không gọi.','goi_y_san_pham')],collect:info});
+}
+function analyze(text,st){
+  const t=norm(text),info=extractInfo(t);
+  const input=T('info','Nhận tin nhắn: “'+text+'”.');
+  const em=detectEmergency(t,info);
+  if(em)return emergencyResult(em,text,info,input);
+  if(st.ctx.awaiting){const r=handleReply(st.ctx.awaiting,t,text,info,st,input);if(r)return r;}
+  return classify(t,text,info,input,st);
+}
+
+/* ===================== STATE & ACTIONS ===================== */
+const CLOCK0=10*3600+23*60;
+const D={type:15,ai:45,aiEm:3,card:6,handoff:20,accept:95,resolve:60,approve:70,click:8};
+function fmt(s){const h=Math.floor(s/3600)%24,m=Math.floor(s/60)%60,x=s%60;const z=n=>String(n).padStart(2,'0');return z(h)+':'+z(m)+':'+z(x);}
+function dur(s){if(s<60)return s+' giây';const m=Math.floor(s/60),x=s%60;return m+' phút'+(x?' '+x+' giây':'');}
+function tick(n){state.clock+=n;return state.clock;}
+function freshState(){return {clock:CLOCK0,selected:null,messages:[],turns:[],decision:null,cases:[],banner:null,call:'idle',consent:false,saved:null,collected:{},ctx:{awaiting:null,lastUser:''},seq:0};}
+// Tab và trạng thái §4 nằm NGOÀI state chat: chọn kịch bản hay Reset không làm mất/đổi tab.
+let state=freshState();
+let ui={tab:'chat',checks:[false,false,false],test:null,demoBought:false,demoOrdered:false};
+
+function upsertCase(c){
+  const ex=state.cases.find(x=>x.sid===c.sid);
+  if(ex){const keep=(ex.status==='Accepted'||ex.status==='Resolved')&&!c.emergency;
+    Object.assign(ex,c,{id:ex.id,status:keep?ex.status:c.status});return ex;}
+  c.id='C'+(++state.seq);state.cases.unshift(c);return c;
+}
+function apply(r,turnTitle,t0){
+  const em=!!r.banner;
+  const tAi=tick(em?D.aiEm:(r.card?D.card:D.ai)),lat=tAi-t0;
+  if(em){state.messages.push({type:'emerg',title:r.banner.title,paras:r.msgs,sub:r.banner.sub,t:tAi,lat});}
+  else if(r.msgs.length)state.messages.push({type:'ai',text:r.msgs.join('\n\n'),t:tAi,lat});
+  if(r.card)state.messages.push({type:'card',card:Object.assign({bought:false},r.card),t:tAi});
+  if(r.gate)state.messages.push({type:'gate',gate:r.gate,checks:r.gate.items.map(()=>false),t:tAi});
+  if(r.actions&&state.messages.length)state.messages[state.messages.length-1].actions=r.actions.map(a=>Object.assign({used:false},a));
+  let tH=null;
+  if(r.caseData){
+    tH=r.immediate?tAi:tick(D.handoff);
+    r.caseData.times={customer:t0,ai:tAi,handoff:tH};
+    upsertCase(r.caseData);
+    state.messages.push({type:'sys',t:tH,text:r.immediate?'Đã báo dược sĩ song song (không ảnh hưởng việc gọi 115)':'Hệ thống đã chuyển ca cho dược sĩ (chưa cam kết thời gian phản hồi)'});
+  }
+  const line='Nhận tin '+fmt(t0)+' → AI phản hồi '+fmt(tAi)+' (sau '+dur(lat)+')'
+    +(tH===null?' → không chuyển dược sĩ':(r.immediate?' → báo dược sĩ '+fmt(tH)+' (song song, cùng lúc với cảnh báo)':' → chuyển dược sĩ '+fmt(tH)+' (sau '+dur(tH-tAi)+' kể từ lúc AI phản hồi)'));
+  r.trace.push(T('info','Mốc thời gian: '+line+'.'));
+  state.turns.push({title:turnTitle+' · '+fmt(t0),steps:r.trace});
+  state.decision={sid:r.sid,badges:r.badges,risk:r.risk,approval:r.approval,immediate:r.immediate};
+  if(r.banner){state.banner=r.banner;state.call='idle';}
+  state.ctx.awaiting=r.awaiting;
+  if(r.collect&&(r.collect.who||r.collect.ageLabel||r.collect.weight||r.collect.temp))state.collected=Object.assign({},state.collected,r.collect);
+}
+function sendUser(text){
+  if(!text.trim())return;
+  const t0=tick(D.type);
+  state.messages.push({type:'me',text,t:t0});
+  state.ctx.lastUser=state.ctx.lastUser&&state.ctx.awaiting?state.ctx.lastUser:text;
+  const r=analyze(text,state);
+  apply(r,'Lượt '+(state.turns.length+1)+' · '+(r.sid||''),t0);
+  if(!state.ctx.awaiting)state.ctx.lastUser='';
+}
+function pickScenario(id){
+  const s=SCEN.find(x=>x.id===id);
+  const keepCases=state.cases, seq=state.seq, clk=state.clock;
+  state=freshState();state.cases=keepCases;state.seq=seq;state.selected=id;state.clock=clk;
+  state.ctx.lastUser=s.msg;
+  const t0=tick(D.type);
+  state.messages.push({type:'me',text:s.msg,t:t0});
+  const r=analyze(s.msg,state);
+  apply(r,id+' · '+s.title,t0);
+  if(!state.ctx.awaiting)state.ctx.lastUser='';
+}
+function chipAction(i,aid){
+  const m=state.messages[i];if(!m||!m.actions)return;
+  const a=m.actions.find(x=>x.id===aid);if(!a||a.used)return;a.used=true;
+  if(aid==='ask_pharm'){
+    const sid=state.decision&&state.decision.sid||'Ca lạ';
+    const first=state.messages.find(x=>x.type==='me')||{};
+    const orig=first.text||'';
+    const info=extractInfo(norm(orig));
+    const tReq=tick(D.click);
+    state.messages.push({type:'me',text:a.label,t:tReq});
+    const tAi=tick(D.aiEm),tH=tick(D.handoff);
+    const c=mkCase(sid,orig,info,[['Khách đồng ý chuyển','Có']],'Trung bình','Khách nhờ dược sĩ hỗ trợ sau khi AI từ chối/không xác minh được.','Tư vấn trực tiếp theo yêu cầu của khách.','Pending');
+    c.times={customer:first.t,request:tReq,ai:tAi,handoff:tH};
+    upsertCase(c);
+    state.messages.push({type:'ai',text:'Mình đã chuyển ca cho dược sĩ.',t:tAi,lat:tAi-tReq});
+    state.messages.push({type:'sys',t:tH,text:'Hệ thống đã chuyển ca cho dược sĩ (chưa cam kết thời gian phản hồi)'});
+    state.turns.push({title:'Khách chọn: nhờ dược sĩ · '+fmt(tReq),steps:[T('executed','chuyen_duoc_si: EXECUTED theo yêu cầu của khách.','chuyen_duoc_si'),T('info','Mốc thời gian: khách yêu cầu '+fmt(tReq)+' → AI phản hồi '+fmt(tAi)+' → chuyển dược sĩ '+fmt(tH)+'.')]});
+  }
+}
+function buyCard(i){
+  const m=state.messages[i];if(!m||m.type!=='card'||m.card.bought)return;
+  m.card.bought=true;const t=tick(D.click);
+  state.messages.push({type:'sys',t,text:'Khách bấm Mua ngay (mô phỏng): đã tạo đơn nháp, chưa thanh toán thật.'});
+  state.turns.push({title:'Khách bấm Mua ngay · '+fmt(t),steps:[T('executed','goi_y_san_pham nhánh 1: đơn nháp được tạo (mô phỏng).','goi_y_san_pham')]});
+}
+function setGate(key,v){const p=key.split(':').map(Number);const m=state.messages[p[0]];if(m&&m.type==='gate')m.checks[p[1]]=v;}
+function orderGate(i){
+  const m=state.messages[i];if(!m||m.type!=='gate'||!m.checks.every(Boolean))return;
+  const t=tick(D.click);
+  state.messages.push({type:'sys',t,text:'Đã đặt đơn (mô phỏng): khách tự tích đủ 3 ô; ca này không cần dược sĩ duyệt.'});
+  state.turns.push({title:'Khách bấm Đặt hàng · '+fmt(t),steps:[T('executed','goi_y_san_pham nhánh 2: khách đã xác nhận 3 ô → nút Đặt hàng mở.','goi_y_san_pham')]});
+}
+function callEmergency(){
+  state.call='called';
+  const t=tick(D.click);
+  state.messages.push({type:'sys',t,text:'Khách bấm GỌI 115 NGAY (mô phỏng, không gọi thật)'});
+  state.turns.push({title:'Người dùng bấm GỌI 115 NGAY · '+fmt(t),steps:[T('info','Mô phỏng cuộc gọi 115 (không gọi thật). Hướng dẫn cấp cứu vẫn hiển thị.')]});
+}
+function acceptCase(id){
+  const c=state.cases.find(x=>x.id===id);if(!c||c.status==='Resolved'||c.status==='Accepted')return;c.status='Accepted';
+  const t=tick(D.accept);c.times=c.times||{};c.times.accepted=t;
+  const w=c.times.handoff!==undefined?' — ca đã chờ '+dur(t-c.times.handoff)+' kể từ lúc chuyển':'';
+  state.messages.push({type:'sys',t,text:'Dược sĩ đã nhận ca'+w+(c.emergency?'. Vẫn hãy đưa người bệnh đi cấp cứu.':'.')});
+}
+function resolveCase(id){const c=state.cases.find(x=>x.id===id);if(!c)return;c.status='Resolved';c.times=c.times||{};c.times.resolved=tick(D.resolve);}
+function summaryCase(){
+  const t=tick(D.handoff);
+  const c=mkCase('Phiếu tóm tắt','Demo nhóm nhạy cảm: trẻ < 2 tuổi, bà bầu, người già, hoặc có dấu hiệu cấp cứu',{who:'Trẻ nhỏ'},[['Nhóm','Nhạy cảm — AI khóa nút Mua']],'Cao','Thuộc nhóm nhạy cảm nên AI không gợi ý mua thuốc.','Dược sĩ tư vấn trực tiếp; khách không có nút mua.','Pending');
+  c.times={handoff:t};
+  upsertCase(c);
+}
+function runTest(id){pickScenario(id);ui.test=evalTest(id);ui.tab='auto';}
+function evalTest(id){
+  const C=state.messages, steps=state.turns.flatMap(t=>t.steps);
+  const blocked=tool=>steps.some(s=>s.tool===tool&&s.kind==='blocked');
+  const me=C.find(m=>m.type==='me');
+  const card=C.find(m=>m.type==='card');
+  const gate=C.find(m=>m.type==='gate');
+  const emerg=C.find(m=>m.type==='emerg');
+  const aiAsks=C.some(m=>m.type==='ai'&&/\?/.test(m.text||''));
+  const checks=[];
+  if(id==='N'){
+    checks.push({q:Q[0],st:'na',txt:'Không có hành vi sai nào để chặn trong kịch bản thường.'});
+    checks.push({q:Q[1],st:(!aiAsks&&!!card)?'pass':'fail',txt:aiAsks?'AI hỏi lại dù không cần thiết.':'Không hỏi lại; hiện thẻ sản phẩm ngay (nhánh 1).'});
+    const d=card&&me?card.t-me.t:null;
+    checks.push({q:Q[2],st:(d!==null&&d<=15)?'pass':'fail',txt:d!==null?'Thẻ sản phẩm hiện sau '+dur(d)+' (mục tiêu ≤ 15 giây).':'Chưa có thẻ sản phẩm.'});
+  }else{
+    const okBlock=blocked('goi_y_san_pham')&&blocked('ban_thuoc_ke_don')&&!card&&!gate;
+    checks.push({q:Q[0],st:okBlock?'pass':'fail',txt:'goi_y_san_pham và ban_thuoc_ke_don đều BLOCKED; không có sản phẩm hay nút mua nào hiện ra.'});
+    checks.push({q:Q[1],st:(!aiAsks&&!!emerg)?'pass':'fail',txt:'Hướng dẫn gọi 115 đi trước; không hỏi sàng lọc trước khi có hướng dẫn.'});
+    const d=emerg&&me?emerg.t-me.t:null;
+    checks.push({q:Q[2],st:(d!==null&&d<=5)?'pass':'fail',txt:d!==null?'Hướng dẫn gọi 115 hiện sau '+dur(d)+', không qua hàng chờ dược sĩ.':'Chưa có hướng dẫn cấp cứu.'});
+  }
+  return {id,label:TESTS.find(x=>x.id===id).label,checks};
+}
+
+function saveNote(){
+  if(!state.consent){state.turns.push({title:'Lưu ghi chú sức khỏe',steps:[T('blocked','luu_ghi_chu_suc_khoe: BLOCKED — khách chưa đồng ý.','luu_ghi_chu_suc_khoe')]});return;}
+  state.saved=Object.assign({},state.collected);
+  state.turns.push({title:'Lưu ghi chú sức khỏe',steps:[T('executed','luu_ghi_chu_suc_khoe: EXECUTED — có sự đồng ý rõ ràng của khách.','luu_ghi_chu_suc_khoe')]});
+}
+
+/* ===================== UI ===================== */
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);}
+const BG={'VERIFIED':'VERIFIED','VẬT TƯ · TỰ LÀM':'VERIFIED','NEEDS SCREENING':'SCREEN','PHARMACIST REQUIRED':'PHARM','CHECKLIST 3 Ô':'PEND','PENDING APPROVAL':'PEND','EMERGENCY':'EMER','BLOCKED':'BLOCK'};
+const $=id=>document.getElementById(id);
+function badges(list){return list.map(b=>'<span class="badge bg-'+BG[b]+'">'+esc(b)+'</span>').join('');}
+const AUTO_TAG={
+  S1:'Chưa có dữ liệu xác minh → chuyen_duoc_si TỰ LÀM · goi_y_san_pham: KHÔNG DÙNG',
+  S2:'chuyen_duoc_si TỰ LÀM · goi_y_san_pham: KHÔNG DÙNG (không có căn cứ)',
+  S3:'Sàng lọc trước · goi_y_san_pham: CHẶN tới khi đủ thông tin',
+  S4:'Nhóm nhạy cảm: KHÓA nút Mua · chỉ soạn phiếu tóm tắt',
+  S5:'ban_thuoc_ke_don: CẤM · không đề xuất thuốc thay thế',
+  S6:'chuyen_duoc_si TỰ LÀM · liều dùng: NGOÀI THẨM QUYỀN',
+  S7:'khuyen_di_kham TỰ LÀM · goi_y_san_pham: CẤM · chuyen_duoc_si SONG SONG',
+  S8:'khuyen_di_kham TỰ LÀM · goi_y_san_pham: CẤM · chuyen_duoc_si SONG SONG',
+  'Ca lạ':'Sàng lọc trước · goi_y_san_pham: CHƯA DÙNG',
+  'Phiếu tóm tắt':'Khóa nút Mua · chỉ soạn phiếu tóm tắt cho dược sĩ'
+};
+
+function renderScen(){
+  $('scen').innerHTML='<b>Kịch bản:</b>'+SCEN.filter(s=>!s.extra).map(s=>'<button class="chip'+(s.hot?' hot':'')+(state.selected===s.id?' on':'')+'" data-s="'+s.id+'" title="'+esc(s.layer)+'">'+s.id+' · '+esc(s.title)+'</button>').join('')+'<button class="reset" id="reset">↺ Reset demo</button>';
+}
+function callBtn(){
+  return state.call==='called'
+    ?'<button class="call done" disabled>✔ Đã mô phỏng cuộc gọi 115 (demo — không gọi thật). Nếu là tình huống thật, hãy gọi 115 ngay trên điện thoại.</button>'
+    :'<button class="call" data-call="1">📞 GỌI 115 NGAY</button>';
+}
+function tsHtml(m){
+  if(m.t===undefined||m.type==='sys')return '';
+  if(m.type==='me')return '<div class="ts r">'+fmt(m.t)+' · Khách</div>';
+  if(m.type==='prod')return '<div class="ts l">'+fmt(m.t)+' · Dược sĩ duyệt gợi ý</div>';
+  return '<div class="ts l">'+fmt(m.t)+' · Pharmacity AI'+(m.lat!==undefined?' · phản hồi sau '+dur(m.lat):'')+'</div>';
+}
+function msgHtml(m,i){
+  let h='';
+  if(m.type==='emerg'){
+    h='<div class="b emerg" role="alert"><div class="et">'+esc(m.title)+'</div>'+m.paras.map((p,k)=>'<p'+(k===0?' class="ef"':'')+'>'+esc(p)+'</p>').join('')+callBtn()+'<div class="sub">✔ '+esc(m.sub)+'</div></div>';
+  }else if(m.type==='card'){
+    h='<div class="pcard"><span class="ptag">'+esc(m.card.tag)+'</span><div><b>'+esc(m.card.name)+'</b></div><div class="note">'+esc(m.card.note)+'</div>'
+     +(m.card.bought?'<div class="okbox">✔ Đã tạo đơn nháp (mô phỏng, không thanh toán thật)</div>':'<button class="btn" data-buy="'+i+'">Mua ngay</button>')+'</div>';
+  }else if(m.type==='gate'){
+    const ok=m.checks.every(Boolean);
+    h='<div class="gate"><b>'+esc(m.gate.title)+'</b>'
+     +m.gate.items.map((it,k)=>'<label><input type="checkbox" data-gchk="'+i+':'+k+'"'+(m.checks[k]?' checked':'')+'> '+esc(it)+'</label>').join('')
+     +'<button class="btn" data-gorder="'+i+'"'+(ok?'':' disabled')+'>Đặt hàng</button>'
+     +'<div class="lock">'+(ok?'✔ Đã tích đủ 3 ô — nút Đặt hàng đã mở.':'Nút Đặt hàng bị khóa cho đến khi tích đủ 3 ô.')+'</div></div>';
+  }else{
+    h='<div class="b '+m.type+'">'+(m.type==='sys'&&m.t!==undefined?'🕒 '+fmt(m.t)+' · ':'')+esc(m.text)+'</div>';
+  }
+  h+=tsHtml(m);
+  if(m.actions)h+='<div class="acts">'+m.actions.map(a=>'<button data-i="'+i+'" data-a="'+a.id+'"'+(a.used?' disabled':'')+'>'+esc(a.label)+'</button>').join('')+'</div>';
+  return h;
+}
+function renderChat(){
+  const el=$('chat');
+  if(!state.messages.length){el.innerHTML='<div class="empty">Chọn một kịch bản ở trên hoặc nhập tin nhắn để bắt đầu.</div>';return;}
+  el.innerHTML=state.messages.map((m,i)=>msgHtml(m,i)).join('');
+  el.scrollTop=el.scrollHeight;
+}
+function renderSide(){
+  const d=state.decision;
+  if(!d){$('decision').innerHTML='<h3>Quyết định của AI</h3><p class="note">Chưa có. Chọn một kịch bản để xem.</p>';}
+  else{
+    const rc=/Nguy/.test(d.risk)?'risk-Nguy':d.risk==='Cao'?'risk-Cao':d.risk==='Trung bình'?'risk-TB':'';
+    $('decision').innerHTML='<h3>Quyết định của AI · '+esc(d.sid||'')+'</h3><div>'+badges(d.badges)+'</div><div class="kv" style="margin-top:6px">'
+      +'<div>Mức rủi ro</div><div class="'+rc+'">'+esc(d.risk.toUpperCase())+'</div>'
+      +'<div>Cần dược sĩ duyệt?</div><div>'+esc(d.approval)+'</div>'
+      +'<div>Người dùng phải làm ngay?</div><div>'+(d.immediate?'<b style="color:var(--red)">CÓ — gọi 115 / đi cấp cứu</b>':'Không')+'</div></div>';
+  }
+  const tr=state.turns;
+  $('trace').innerHTML=tr.length?tr.map(t=>'<div class="turn">'+esc(t.title)+'</div>'+t.steps.map((s,i)=>'<div class="step"><span class="n">'+(i+1)+'.</span>'+(s.kind==='info'?'':'<span class="tag t-'+s.kind+'">'+({executed:'EXECUTED',blocked:'BLOCKED',parallel:'PARALLEL',notcalled:'NOT CALLED',pending:'PENDING'})[s.kind]+'</span>')+'<span>'+esc(s.text)+'</span></div>').join('')).join(''):'<p class="note">Chưa có lượt nào.</p>';
+}
+function renderConsent(){
+  const c=state.collected,has=Object.keys(c).some(k=>['who','ageLabel','weight','temp','duration'].includes(k)&&c[k]);
+  const rows=[['Đối tượng',c.who],['Tuổi',c.ageLabel],['Cân nặng',c.weight],['Nhiệt độ',c.temp],['Thời gian',c.duration]].filter(r=>r[1]);
+  $('consent').innerHTML='<h3>Lưu ghi chú sức khỏe (<code>luu_ghi_chu_suc_khoe</code>)</h3>'
+   +(has?'<div class="kv" style="margin-bottom:8px">'+rows.map(r=>'<div>'+r[0]+'</div><div>'+esc(r[1])+'</div>').join('')+'</div>':'<p class="note">Chưa có thông tin sức khỏe nào được thu thập.</p>')
+   +'<label class="cons"><input type="checkbox" id="consentCb"'+(state.consent?' checked':'')+'> Tôi đồng ý để Pharmacity lưu thông tin sức khỏe trên vào hồ sơ của tôi (có thể xóa bất kỳ lúc nào).</label>'
+   +'<button class="btn" id="saveNote"'+((has&&state.consent)?'':' disabled')+'>Lưu ghi chú</button>'
+   +(state.saved?'<p class="note" style="color:var(--green-d)">✔ Đã lưu theo sự đồng ý của khách.</p>':'<p class="note">Mặc định KHÔNG lưu. Nút chỉ bật khi có thông tin và khách đã đồng ý.</p>');
+}
+function timeline(c){
+  const t=c.times||{},rows=[];
+  if(t.customer!==undefined)rows.push(['Khách nhắn',fmt(t.customer)]);
+  if(t.request!==undefined)rows.push(['Khách nhờ dược sĩ',fmt(t.request)]);
+  if(t.ai!==undefined)rows.push(['AI phản hồi',fmt(t.ai)+' (sau '+dur(t.ai-(t.request!==undefined?t.request:t.customer))+')']);
+  if(t.handoff!==undefined)rows.push([c.emergency?'Báo dược sĩ':'Chuyển tới dược sĩ',fmt(t.handoff)+(c.emergency?' — song song với cảnh báo, không chờ':(t.ai!==undefined?' (sau '+dur(t.handoff-t.ai)+' kể từ lúc AI phản hồi)':''))]);
+  if(t.approved!==undefined)rows.push(['Dược sĩ duyệt gợi ý',fmt(t.approved)]);
+  if(t.accepted!==undefined&&t.accepted!==t.approved)rows.push(['Dược sĩ nhận ca',fmt(t.accepted)+(t.handoff!==undefined?' (chờ '+dur(t.accepted-t.handoff)+')':'')]);
+  if(t.resolved!==undefined)rows.push(['Đã xử lý',fmt(t.resolved)]);
+  if(!rows.length)return '';
+  return '<div class="kv" style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)">'+rows.map(r=>'<div>🕒 '+esc(r[0])+'</div><div>'+esc(r[1])+'</div>').join('')+'</div>';
+}
+function caseHtml(c){
+  const rc=/Nguy/.test(c.risk)?'risk-Nguy':c.risk==='Cao'?'risk-Cao':c.risk==='Trung bình'?'risk-TB':'';
+  const btn=(c.status==='Pending'||c.status==='Emergency'?'<button class="btn" data-ac="'+c.id+'">Nhận ca</button>':'')
+           +(c.status==='Accepted'?'<button class="btn" data-rs="'+c.id+'">Đánh dấu đã xử lý</button>':'');
+  return '<div class="case'+(c.emergency?' em':'')+'"><div class="case-h"><b>'+esc(c.sid)+' · '+(c.emergency?'CA KHẨN CẤP':'Ca chuyển')+'</b><span class="st st-'+c.status+'">'+c.status+'</span></div>'
+   +'<div class="autotag">Tự chủ: '+esc(AUTO_TAG[c.sid]||AUTO_TAG['Ca lạ'])+'</div>'
+   +'<div class="kv"><div>Tin nhắn gốc</div><div>“'+esc(c.original)+'”</div><div>Người dùng thuốc</div><div>'+esc(c.patient)+'</div>'
+   +'<div>Thông tin sàng lọc</div><div>'+c.screening.map(s=>esc(s[0])+': <b>'+esc(s[1])+'</b>').join('<br>')+'</div>'
+   +'<div>Mức rủi ro</div><div class="'+rc+'">'+esc(c.risk.toUpperCase())+'</div><div>Lý do chuyển</div><div>'+esc(c.reason)+'</div><div>AI đề xuất bước tiếp</div><div>'+esc(c.next)+'</div></div>'
+   +timeline(c)+'<div>'+btn+'</div></div>';
+}
+function renderPh(){
+  const cs=state.cases;
+  const pend=cs.filter(c=>c.status==='Pending'||c.status==='Emergency').length;
+  const acc=cs.filter(c=>c.status==='Accepted').length;
+  const done=cs.filter(c=>c.status==='Resolved').length;
+  $('cnt').textContent=pend;$('cnt').classList.toggle('hide',!pend);
+  $('stats').innerHTML=[['Chờ nhận',pend,'var(--amber)'],['Đang xử lý',acc,'var(--blue)'],['Hoàn tất',done,'var(--green-d)']]
+    .map(x=>'<div class="stat"><b style="color:'+x[2]+'">'+x[1]+'</b>'+x[0]+'</div>').join('');
+  $('cases').innerHTML=cs.length?cs.map(caseHtml).join(''):'<div class="card note">Chưa có ca nào được chuyển.</div>';
+}
+function renderAuto(){
+  $('mtable').innerHTML='<div style="overflow-x:auto"><table><tr><th>Tool</th><th>Mức của nhóm</th><th>Sai thì ai chịu gì?</th><th>Đảo lại được không?</th><th>Chờ người thì mất gì?</th></tr>'
+    +MTABLE.map(m=>'<tr><td><code>'+esc(m.tool)+'</code></td><td class="lv '+m.cls+'">'+esc(m.lv)+'</td><td>'+esc(m.sai)+'</td><td>'+esc(m.rev)+'</td><td>'+esc(m.wait)+'</td></tr>').join('')+'</table></div>';
+  const ok3=ui.checks.every(Boolean);
+  $('branches').innerHTML=
+    '<div class="branch"><h4>Nhánh 1 · Vật tư thông thường</h4><span class="pill pill-auto">TỰ LÀM</span>'
+   +'<p class="note">Bông băng, nước muối sinh lý, nhiệt kế, khẩu trang. AI hiện danh thiếp và nút mua ngay.</p>'
+   +'<div class="pcard-demo"><b>Nước muối sinh lý Physiodose (dữ liệu giả)</b><div class="note">Không kê đơn.</div>'
+   +(ui.demoBought?'<div class="okbox">✔ Đã tạo đơn nháp (mô phỏng)</div>':'<button class="btn" data-demo-buy="1">Mua ngay</button>')+'</div></div>'
+   +'<div class="branch"><h4>Nhánh 2 · Thuốc OTC, người lớn</h4><span class="pill pill-appr">CẦN KHÁCH DUYỆT</span>'
+   +'<p class="note">Khách tự tích bảng kiểm an toàn 3 câu. Đủ 3 ô thì nút Đặt hàng mới mở.</p>'
+   +CHECK_ITEMS.map((x,k)=>'<label><input type="checkbox" data-chk="'+k+'"'+(ui.checks[k]?' checked':'')+'> '+esc(x)+'</label>').join('')
+   +(ui.demoOrdered?'<div class="okbox">✔ Đã đặt (mô phỏng)</div>':'<button class="btn" data-demo-order="1"'+(ok3?'':' disabled')+'>Đặt hàng</button>')
+   +'<div class="lock">'+(ok3?'Đã tích đủ 3 ô.':'Còn thiếu '+ui.checks.filter(x=>!x).length+' ô.')+'</div></div>'
+   +'<div class="branch"><h4>Nhánh 2 · Nhóm nhạy cảm</h4><span class="pill pill-lock">KHÓA NÚT MUA</span>'
+   +'<p class="note">Trẻ &lt; 2 tuổi, bà bầu, người già, hoặc có dấu hiệu cấp cứu như S7, S8: AI khóa hoàn toàn nút Mua, chỉ soạn phiếu tóm tắt để dược sĩ tư vấn trực tiếp.</p>'
+   +'<button class="btn" disabled>Mua (đã khóa)</button>'
+   +'<button class="btn sec" data-demo-summary="1">Soạn phiếu tóm tắt cho dược sĩ</button></div>';
+  $('tests').innerHTML=TESTS.map(x=>'<button class="btn" data-test="'+x.id+'">'+esc(x.label)+'</button>').join('');
+  $('testres').innerHTML=ui.test?testHtml(ui.test):'<p class="note">Bấm một nút ở trên: prototype chạy kịch bản thật trong khung chat rồi tự chấm 3 câu hỏi kiểm chứng. Muốn xem từng tin nhắn và mốc giờ, chuyển sang tab Khách hàng.</p>';
+  $('promise').innerHTML='<div class="promise old"><small>Lời hứa cũ (nguy hiểm, thiếu thực tế)</small>“AI thông minh có thể giải quyết mọi vấn đề thuốc men và mua sắm tức thì cho bạn 24/7.”<div class="note" style="margin-top:4px">Tạo ra tin tưởng mù quáng (over-trust): người dùng ỷ lại AI cả trong tình huống nguy kịch.</div></div>'
+    +'<div class="promise"><small>Lời hứa mới (minh bạch, đáng tin cậy theo Google PAIR)</small>“Pharmacity AI là Trợ lý phân luồng và sàng lọc an toàn: Giúp bạn mua sắm vật tư thiết yếu tức thì; đồng thời là lá chắn bảo vệ sức khỏe, kết nối Dược sĩ chuyên môn kiểm duyệt ngay khi bạn cần điều trị bệnh.”</div>';
+}
+function testHtml(r){
+  const scored=r.checks.filter(c=>c.st!=='na'), pass=scored.filter(c=>c.st==='pass').length;
+  const mk={pass:'<span class="okbox">✔</span>',fail:'<span class="failbox">✘</span>',na:'<span class="nabox">—</span>'};
+  return '<div style="margin-top:10px"><b>'+esc(r.label)+' — đạt '+pass+'/'+scored.length+' câu</b>'
+    +r.checks.map(c=>'<div class="qrow"><span class="mk">'+mk[c.st]+'</span><div><b>'+esc(c.q)+'</b><div class="note">'+esc(c.txt)+'</div></div></div>').join('')
+    +'<p class="note">Giờ là đồng hồ mô phỏng. Muốn xem từng tin và mốc giờ, chuyển sang tab Khách hàng hoặc Dược sĩ.</p></div>';
+}
+function renderAll(){
+  renderScen();renderChat();renderSide();renderConsent();renderPh();renderAuto();
+  const views={chat:'view-chat',ph:'view-ph',auto:'view-auto'};
+  for(const k in views){$('tab-'+k).classList.toggle('on',ui.tab===k);$(views[k]).classList.toggle('hide',ui.tab!==k);}
+}
+if(typeof document!=='undefined'){
+  document.addEventListener('click',e=>{
+    const t=e.target.closest('button,input');if(!t)return;const d=t.dataset;
+    if(d.s){pickScenario(d.s);}
+    else if(t.id==='reset'){state=freshState();ui.checks=[false,false,false];ui.test=null;ui.demoBought=false;ui.demoOrdered=false;}
+    else if(d.call!==undefined){callEmergency();}
+    else if(d.a!==undefined){chipAction(+d.i,d.a);}
+    else if(d.buy!==undefined){buyCard(+d.buy);}
+    else if(d.gchk!==undefined){setGate(d.gchk,t.checked);}
+    else if(d.gorder!==undefined){orderGate(+d.gorder);}
+    else if(d.chk!==undefined){ui.checks[+d.chk]=t.checked;}
+    else if(d.demoBuy!==undefined){ui.demoBought=true;}
+    else if(d.demoOrder!==undefined){ui.demoOrdered=true;}
+    else if(d.demoSummary!==undefined){summaryCase();}
+    else if(d.test!==undefined){runTest(d.test);}
+    else if(t.id==='tab-chat'){ui.tab='chat';}
+    else if(t.id==='tab-ph'){ui.tab='ph';}
+    else if(t.id==='tab-auto'){ui.tab='auto';}
+    else if(d.ac!==undefined){acceptCase(d.ac);}
+    else if(d.rs!==undefined){resolveCase(d.rs);}
+    else if(t.id==='saveNote'){saveNote();}
+    else if(t.id==='consentCb'){state.consent=t.checked;}
+    else return;
+    renderAll();
+  });
+  $('form').addEventListener('submit',e=>{e.preventDefault();const v=$('inp').value;$('inp').value='';sendUser(v);renderAll();});
+  renderAll();
+}
+</script>
+</body>
+</html>

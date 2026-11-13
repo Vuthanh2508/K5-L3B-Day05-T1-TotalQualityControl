@@ -64,13 +64,19 @@ Cái giá của sự sai sót trong y tế được đo bằng **tính mạng co
 
 ### 3.1. S7 — Bé 6 tháng ho đờm, khò khè thở rít
 
-**AI nói (nguyên văn) — một tin nhắn duy nhất trong khung chat, khối đỏ có tiêu đề "🚨 CẦN ĐÁNH GIÁ Y TẾ KHẨN CẤP":**
-> "Bé có dấu hiệu hô hấp cần được đánh giá y tế khẩn cấp. Vui lòng đưa bé đi cấp cứu ngay."
-> "Vì sao mình khuyên vậy: bé còn nhỏ (6 tháng) và có khò khè/thở rít — đây có thể là dấu hiệu hô hấp nghiêm trọng. Mình không chẩn đoán, và sẽ không gợi ý siro ho hay thuốc nào trong tình huống này, hãy đưa bé đi gặp bác sĩ ngay."
-> [Nút **📞 GỌI 115 NGAY**]
-> "✔ Đã thông báo dược sĩ – không cần chờ phản hồi để đi cấp cứu."
+**AI nói (nguyên văn) — một bong bóng đỏ duy nhất trong khung chat, theo đúng thứ tự:**
+1. Tiêu đề: "🚨 CẦN ĐÁNH GIÁ Y TẾ KHẨN CẤP"
+2. Câu chính, in đậm: "Bé có dấu hiệu hô hấp cần được đánh giá y tế khẩn cấp. Vui lòng đưa bé đi cấp cứu ngay."
+3. Nút **📞 GỌI 115 NGAY** (đặt ngay dưới câu chính, trước mọi giải thích)
+4. Lời nhắc: "Nếu bé khó thở, tím môi, li bì hoặc nặng hơn, hãy gọi 115 ngay."
+5. Khối **G11 — "Vì sao mình khuyên vậy?"**:
+   - Đối tượng: Trẻ nhỏ · 6 tháng
+   - Dấu hiệu bạn mô tả: khò khè/thở rít
+   - Quy tắc an toàn: dấu hiệu hô hấp ở trẻ nhỏ được ưu tiên hơn yêu cầu mua siro.
+6. Khối **G1 — "Mình là trợ lý AI"**: "Không thay thế bác sĩ hay dược sĩ. Lúc này mình không chẩn đoán và không gợi ý thuốc; mình chỉ hướng dẫn bạn gọi cấp cứu và báo dược sĩ."
+7. Dòng xác nhận: "✔ Đã thông báo dược sĩ – không cần chờ phản hồi để đi cấp cứu."
 
-**Người dùng thấy gì:** toàn bộ nội dung trên nằm **trong chính khung chat** dưới dạng một bong bóng đỏ nổi bật (không tách thành nhiều tin và không có banner riêng bên ngoài). Nút "GỌI 115 NGAY" nằm ngay trong bong bóng đó. **Không có** nút mua/đặt hàng/ship nào xuất hiện.
+**Người dùng thấy gì:** bong bóng đỏ nằm trong khung chat, không tách thành nhiều tin và không có banner riêng. Trên đầu khung chat có thanh G1 cố định ("Mình là trợ lý AI, không thay thế dược sĩ hay bác sĩ…") và nhãn "🤖 Bạn đang trò chuyện với AI". **Không có** nút mua, đặt hàng hay ship nào.
 
 **Họ làm gì tiếp:** (1) đưa bé đi cấp cứu hoặc bấm gọi 115; (2) nếu không làm gì, bong bóng đỏ và nút gọi vẫn là tin nhắn mới nhất trong chat, không có bước nào khác chen vào.
 
@@ -83,21 +89,27 @@ Cái giá của sự sai sót trong y tế được đo bằng **tính mạng co
 | Trả lời kèm giới hạn ("có thể dùng siro X nhưng hãy theo dõi") | **Loại** | Nghe như vẫn được dùng thuốc; người đọc dễ chỉ đọc vế đầu và bấm mua. Thuốc đã uống không hoàn tác được. |
 | **Dừng bán + khuyên đi cấp cứu ngay, báo dược sĩ song song** | **Chọn** | Cái giá của sai là suy hô hấp trong vài giờ; cái giá của việc cảnh báo thừa chỉ là một lần đi khám. |
 
-**Loại lỗi:** **lỗi người dùng + lỗi ngữ cảnh.** Phụ huynh đóng khung yêu cầu là "mua siro" (do cách đặt vấn đề) và đang ở tình huống cần quyết định nhanh. Hệ thống không "làm sai" kỹ thuật, nhưng nếu chỉ trả lời đúng câu hỏi thì sẽ sai về hoàn cảnh. Cách nói phải **chỉ thẳng hành động cần làm**, không xin lỗi dài dòng; cách sửa là đổi luồng (cắt luồng bán hàng), không chỉ đổi câu chữ.
+**Loại lỗi:** **lỗi người dùng + lỗi ngữ cảnh.** Phụ huynh đóng khung yêu cầu là "mua siro" (do cách đặt vấn đề) và đang ở tình huống cần quyết định nhanh. Hệ thống không làm sai kỹ thuật, nhưng nếu chỉ trả lời đúng câu hỏi thì sẽ sai về hoàn cảnh. Cách nói phải **chỉ thẳng hành động cần làm**, không xin lỗi dài dòng, cách sửa là đổi luồng (cắt luồng bán hàng), không chỉ đổi câu chữ
 
 ### 3.2. S8 — Bố 68 tuổi đau thắt ngực lan vai trái, khó thở, vã mồ hôi
 
-**AI nói (nguyên văn) — một tin nhắn duy nhất trong khung chat, khối đỏ có tiêu đề "🚨 CẤP CỨU":**
-> "Đây có thể là tình trạng cấp cứu nguy hiểm. Vui lòng gọi 115 ngay lập tức. Không chờ giao thuốc hoặc chờ phản hồi chat từ dược sĩ."
-> "Vì sao mình khuyên vậy: mình nhận thấy đau/tức ngực, đau lan ra vai/tay, khó thở, vã mồ hôi ở người 68 tuổi — tổ hợp này có thể là dấu hiệu nguy hiểm đến tính mạng. Mình không thể chẩn đoán; chỉ nhân viên y tế mới đánh giá được. Trong lúc chờ xe cấp cứu, cho người bệnh dừng mọi hoạt động, ngồi hoặc nằm nghỉ ở tư thế thoải mái; không tự cho dùng thêm thuốc và không tự đổi thuốc đang dùng."
-> [Nút **📞 GỌI 115 NGAY**]
-> "✔ Đã thông báo dược sĩ – không cần chờ phản hồi để gọi cấp cứu."
+**AI nói (nguyên văn) — một bong bóng đỏ duy nhất trong khung chat, theo đúng thứ tự:**
+1. Tiêu đề: "🚨 CẤP CỨU"
+2. Câu chính, in đậm: "Đây có thể là tình trạng cấp cứu nguy hiểm. Vui lòng gọi 115 ngay lập tức. Không chờ giao thuốc hoặc chờ phản hồi chat từ dược sĩ."
+3. Nút **📞 GỌI 115 NGAY**
+4. Lời dặn: "Trong lúc chờ xe cấp cứu: cho người bệnh dừng mọi hoạt động, ngồi hoặc nằm nghỉ ở tư thế thoải mái; không tự cho dùng thêm thuốc và không tự đổi thuốc đang dùng."
+5. Khối **G11 — "Vì sao mình khuyên vậy?"**:
+   - Đối tượng: Người lớn · 68 tuổi
+   - Dấu hiệu bạn mô tả: đau/tức ngực, đau lan ra vai/tay, khó thở, vã mồ hôi
+   - Quy tắc an toàn: tổ hợp dấu hiệu này có thể nguy hiểm đến tính mạng, nên được ưu tiên hơn yêu cầu mua thuốc.
+6. Khối **G1 — "Mình là trợ lý AI"**: "Không thay thế bác sĩ hay dược sĩ. Lúc này mình không chẩn đoán và không gợi ý thuốc; mình chỉ hướng dẫn bạn gọi cấp cứu và báo dược sĩ."
+7. Dòng xác nhận: "✔ Đã thông báo dược sĩ – không cần chờ phản hồi để gọi cấp cứu."
 
-**Người dùng thấy gì:** toàn bộ nội dung trên nằm **trong khung chat** dưới dạng một bong bóng đỏ nổi bật, nút "GỌI 115 NGAY" nằm ngay trong bong bóng. Không hỏi thêm câu sàng lọc nào trước hướng dẫn này. Không có sản phẩm, giá hay nút ship.
+**Người dùng thấy gì:** bong bóng đỏ trong khung chat với nút gọi 115 nằm ngay trong đó. Không có câu sàng lọc nào trước hướng dẫn này. Không có sản phẩm, giá hay nút ship.
 
 **Họ làm gì tiếp:** gọi 115 ngay, cho người bệnh nghỉ ngơi. Nếu không làm gì, màn hình giữ nguyên bong bóng đỏ và nút; AI không chuyển sang chủ đề khác.
 
-**Ai được báo, bao lâu:** dược sĩ nhận ca **Emergency** ngay tức thì, song song. Theo đồng hồ mô phỏng: khách nhắn **10:23:15** → AI hiện cảnh báo **10:23:18** (sau 3 giây) → báo dược sĩ **10:23:18**. Ca này **không đi qua hàng chờ** trước hướng dẫn gọi 115: hướng dẫn hiển thị trước, thông báo dược sĩ chạy cùng lúc.
+**Ai được báo, bao lâu:** dược sĩ nhận ca **Emergency** ngay tức thì, song song. Theo đồng hồ mô phỏng: khách nhắn **10:23:15** → AI hiện cảnh báo **10:23:18** (sau 3 giây) → báo dược sĩ **10:23:18**. Ca này **không đi qua hàng chờ** trước hướng dẫn gọi 115: hướng dẫn hiển thị trước, thông báo dược sĩ chạy cùng lúc
 
 **Quyết định chiến lược**
 | Phương án | Kết quả | Lý do |
@@ -105,47 +117,33 @@ Cái giá của sự sai sót trong y tế được đo bằng **tính mạng co
 | Hỏi lại ("đau từ khi nào?") | **Loại** | Với nghi nhồi máu, từng phút đều quan trọng; câu hỏi làm chậm việc gọi cấp cứu. Dấu hiệu nêu trong tin nhắn đã đủ. |
 | Trả lời kèm giới hạn ("thuốc ngậm có thể giúp nhưng nên đi khám") | **Loại** | Gợi ý thuốc khiến người nhà chờ thuốc giao thay vì gọi cấp cứu; AI cũng không biết người bệnh đã dùng thuốc nào hay có chống chỉ định không. |
 | Chuyển dược sĩ rồi để khách chờ trong hàng đợi chat | **Loại** | Chờ 5–10 phút là cái giá lớn nhất ở ca này; dược sĩ không thể cấp cứu từ xa. |
-| **Dừng mọi bán/gợi ý + hướng dẫn gọi 115 ngay, báo dược sĩ song song** | **Chọn** | Chặn đúng điểm hại (chờ thuốc / chờ chat); chi phí nếu báo nhầm chỉ là một cuộc gọi. |
+| **Dừng mọi bán/gợi ý + hướng dẫn gọi 115 ngay, báo dược sĩ song song** | **Chọn** | Chặn đúng điểm hại (chờ thuốc / chờ chat), chi phí nếu báo nhầm chỉ là một cuộc gọi. |
 
-**Loại lỗi:** **lỗi ngữ cảnh.** Hệ thống chạy đúng thiết kế (hiểu yêu cầu mua thuốc) nhưng không phù hợp tình huống: người dùng đang hoảng loạn và khung tin nhắn là mua hàng. Lời xin lỗi không cần thiết; cách nói phải ngắn, dứt khoát, tập trung hành động. Cách sửa là **thiết kế**: ưu tiên luồng khẩn cấp bỏ qua mọi bước duyệt/hàng chờ.
+**Loại lỗi:** **lỗi ngữ cảnh.** Hệ thống chạy đúng thiết kế (hiểu yêu cầu mua thuốc) nhưng không phù hợp tình huống: người dùng đang hoảng loạn và khung tin nhắn là mua hàng. Lời xin lỗi không cần thiết, cách nói phải ngắn, dứt khoát, tập trung hành động. Cách sửa là **thiết kế**: ưu tiên luồng khẩn cấp bỏ qua mọi bước duyệt/hàng chờ
 
-### 3.3. Mốc thời gian: nhận tin, phản hồi, chuyển dược sĩ
-Prototype hiển thị giờ ở **ba chỗ**: dưới mỗi tin nhắn trong khung chat (giờ khách gửi, giờ AI phản hồi và độ trễ), dòng "🕒 … Hệ thống đã chuyển ca cho dược sĩ" ngay trong chat, và mục "Mốc thời gian" trên từng ca ở bảng dược sĩ. Giờ là **đồng hồ mô phỏng** (bắt đầu 10:23) để demo ổn định, không phải giờ thật.
-
-| Mốc | Ca thường (ví dụ S2: hỏi tương tác thuốc) | S7 (bé khò khè) | S8 (nghi nhồi máu) |
-|---|---|---|---|
-| Khách nhắn | 10:23:15 | 10:23:15 | 10:23:15 |
-| AI phản hồi | 10:24:00 (sau 45 giây: cần đối chiếu, soạn câu hỏi/sàng lọc) | 10:23:18 (sau **3 giây**) | 10:23:18 (sau **3 giây**) |
-| Chuyển/báo dược sĩ | 10:24:20 (**sau** phản hồi 20 giây, tuần tự) | 10:23:18 (**cùng lúc**, song song) | 10:23:18 (**cùng lúc**, song song) |
-| Dược sĩ nhận ca | phụ thuộc dược sĩ trực (demo: bấm "Nhận ca") | như vậy, và không là điều kiện để đi cấp cứu | như vậy, và không là điều kiện để gọi 115 |
-
-**Cách đọc bảng (lập luận thiết kế):**
-- Ở ca thường, chuyển dược sĩ đi **sau** phản hồi: AI trả lời trước rồi mới chuyển, mất khoảng 1 phút từ lúc khách nhắn đến lúc ca nằm ở dược sĩ. Thời gian này chấp nhận được vì không có nguy hiểm tức thời.
-- Ở S7 và S8, phản hồi đến sau vài giây và báo dược sĩ chạy **song song**. Phương án "chuyển dược sĩ rồi để khách chờ hàng đợi 5–10 phút" bị loại đúng vì lý do này: trong 5–10 phút đó khách chưa nhận được hướng dẫn nào.
-- Hệ thống **không hứa giờ dược sĩ phản hồi** (vì `chuyen_duoc_si` chỉ chuyển cuộc chat, không bảo đảm thời gian). Câu hiển thị là "chưa cam kết thời gian phản hồi".
-
-### 3.4. Phân loại lỗi — vì sao cách nói và cách sửa khác nhau
+### 3.3. Phân loại lỗi — vì sao cách nói và cách sửa khác nhau
 | Loại lỗi | Ví dụ trong bài | Cách nói | Cách sửa |
 |---|---|---|---|
 | Hệ thống | AI gọi `goi_y_san_pham` khi lẽ ra phải chặn | Thừa nhận giới hạn, không đổ lỗi cho người dùng | Chặn bằng quy tắc ở tầng tool (khóa cứng), không dựa vào lời nhắc |
-| Người dùng | S7: đóng khung "mua siro" che dấu nguy hiểm; S3: thiếu tuổi/cân nặng | Không trách, hỏi thêm hoặc chỉ thẳng việc cần làm | Nhận diện dấu hiệu ẩn; sàng lọc trước khi hỗ trợ |
-| Ngữ cảnh | S8: hoảng loạn, cần quyết định ngay | Rất ngắn, một hành động rõ ràng | Đổi luồng: khẩn cấp bỏ qua duyệt/hàng chờ |
+| Người dùng | S7: đóng khung "mua siro" che dấu nguy hiểm; S3: thiếu tuổi/cân nặng | Không trách, hỏi thêm hoặc chỉ thẳng việc cần làm | Nhận diện dấu hiệu ẩn, sàng lọc trước khi hỗ trợ |
+| Ngữ cảnh | S8: hoảng loạn, cần quyết định nhanh | Rất ngắn, một hành động rõ ràng | Đổi luồng: khẩn cấp bỏ qua duyệt/hàng chờ |
 
-### 3.5. Nguyên tắc HAX/PAIR (mỗi nguyên tắc trỏ vào một chỗ cụ thể)
-1. **G1/G2 — nói rõ AI làm được gì và làm tốt đến đâu.** → Câu *"Mình không chẩn đoán… sẽ không gợi ý siro ho hay thuốc nào trong tình huống này"* (S7) và *"Mình không thể chẩn đoán; chỉ nhân viên y tế mới đánh giá được"* (S8) trong khung chat. Khách biết AI không phải bác sĩ nên không dựa vào AI để quyết định.
-2. **G11 — giải thích vì sao.** → Đoạn *"Vì sao mình khuyên vậy: …"* trong bong bóng đỏ của S7 và S8, liệt kê đúng các dấu hiệu AI đã nhận thấy; đồng thời bảng **Nhật ký thực thi tool** bên phải hiện *"Dấu hiệu cảnh báo phát hiện: …"* và *"goi_y_san_pham: BLOCKED — có dấu hiệu cấp cứu"*. Khách (và dược sĩ) kiểm chứng được căn cứ.
-3. **PAIR — lỗi và thất bại nhẹ nhàng (mỗi loại lỗi có một đường lui riêng).** → Nút **"GỌI 115 NGAY"** (đường lui cho khách ở cả S7 và S8) nằm ngay trong bong bóng đỏ, cùng dòng *"Đã thông báo dược sĩ – không cần chờ phản hồi để đi cấp cứu"*; khi bấm nút, trạng thái xác nhận *"Đã mô phỏng cuộc gọi 115"* thay thế nút ngay tại chỗ, không rời khỏi hướng dẫn.
+### 3.4. Nguyên tắc HAX/PAIR (mỗi nguyên tắc trỏ vào một chỗ cụ thể)
+1. **G1 — làm rõ AI làm được gì và không làm được gì.** → Thanh G1 cố định ngay dưới tiêu đề khung chat ("Mình là trợ lý AI, không thay thế dược sĩ hay bác sĩ. Mình không chẩn đoán, không bán thuốc kê đơn, không hướng dẫn liều dùng…") và khối G1 trong bong bóng đỏ của S7, S8 ("Không thay thế bác sĩ hay dược sĩ. Lúc này mình không chẩn đoán và không gợi ý thuốc…"). Khách biết ngay đang nói chuyện với AI và không được dựa vào AI để quyết định y khoa.
+2. **G11 — giải thích vì sao.** → Khối "Vì sao mình khuyên vậy?" trong bong bóng đỏ của S7, S8 liệt kê ba căn cứ: đối tượng dùng thuốc, dấu hiệu khách mô tả, quy tắc an toàn đã áp dụng. Bảng **Nhật ký thực thi tool** (cột bên phải, tiêu đề có nhãn G11) ghi lại cùng căn cứ đó và dòng `goi_y_san_pham: BLOCKED`, để khách và dược sĩ kiểm chứng được.
+3. **PAIR — lỗi và thất bại nhẹ nhàng: mỗi loại lỗi có một đường lui riêng.**
+   - *Lỗi hệ thống* (AI không nhận ra dấu hiệu cấp cứu): khi nhận đúng, khối hướng dẫn gọi 115 hiện ngay đầu bong bóng; khi bỏ sót, khách chỉ nhận câu sàng lọc chung có nhắc gọi 115 ở cuối. Đường lui này còn yếu, xem §6 lỗi 1.
+   - *Lỗi người dùng* (khách không đọc hết hoặc bỏ qua hướng dẫn): nút **GỌI 115 NGAY** nằm ngay dưới câu chính, và lời nhắc "nếu khó thở, tím môi, li bì… hãy gọi 115 ngay" nằm ngay cạnh nút.
+   - *Lỗi ngữ cảnh* (khách đang hoảng, không chắc đã bấm được chưa): sau khi bấm, nút đổi thành "✔ Đã mô phỏng cuộc gọi 115" ngay tại vị trí đó, khách không phải tìm lại hướng dẫn.
 
-*(Ảnh chụp đánh số của từng vị trí sẽ gắn ở §5.)*
-
-### 3.6. Lỗi mà sửa câu chữ không cứu được
-**Vấn đề:** dù AI viết rõ "gọi 115 ngay", người nhà vẫn có thể **chờ thuốc giao** vì thói quen "đã đặt thì chờ", hoặc đóng tab chat để chờ dược sĩ trả lời. Câu chữ hay đến đâu cũng không chắc cắt được thói quen này.
+### 3.5. Lỗi mà sửa câu chữ không cứu được
+**Vấn đề:** dù AI viết rõ "gọi 115 ngay", người nhà vẫn có thể chờ vì thói quen đã đặt thì chờ, hoặc chờ dược sĩ trả lời. Câu chữ hay đến đâu cũng không chắc cắt được thói quen này.
 
 **Thiết kế cứu nó (có trong prototype):**
-- Khi nhận diện cấp cứu, **không có giao diện mua hàng nào** (không nút "mua/ship"; `goi_y_san_pham` và `ban_thuoc_ke_don` bị chặn ở tầng tool), nên không còn thứ gì để "chờ".
-- Cảnh báo là **bong bóng đỏ riêng biệt** trong khung chat, khác hẳn màu và kích cỡ các tin nhắn thường, kèm nút **GỌI 115 NGAY** ngay trong đó, nên khó bị bỏ sót hay đọc nhầm thành lời tư vấn bán hàng.
-- Báo dược sĩ **chủ động và song song** (ca ở trạng thái Emergency) để dược sĩ có thể liên hệ lại, không phụ thuộc việc khách có đọc hay không.
-- Ca khẩn cấp **bỏ qua** bước duyệt và hàng chờ (xem mức tự chủ ở §4).
+- Khi nhận diện cấp cứu, **không có giao diện mua hàng nào** (không nút "mua/ship"; `goi_y_san_pham` và `ban_thuoc_ke_don` bị chặn ở tầng tool) nên người dùng không thể chờ gì khác ngoài nút gọi 115
+- Cảnh báo là **bong bóng đỏ riêng biệt** trong khung chat, khác hẳn màu và kích cỡ các tin nhắn thường, kèm nút **GỌI 115 NGAY** ngay trong đó, nên khó bị bỏ sót hay đọc nhầm
+- Báo dược sĩ **chủ động và song song** (ca ở trạng thái Emergency) để dược sĩ có thể liên hệ lại, không phụ thuộc việc khách có đọc hay không
+- Ca khẩn cấp **bỏ qua** bước duyệt và hàng chờ
 
 ## §4. Mức tự chủ (Chặng 4 — Levels of Autonomy)
 
@@ -163,7 +161,7 @@ Nhóm phân loại 5 tool của Track T1 vào 3 mức độ tự chủ dựa tr�
 
 ---
 
-### 2. Tool khó xếp nhất: `goi_y_san_pham` và Giải pháp Tách Tool
+### 2. Tool khó xếp nhất: `goi_y_san_pham`:
 
 #### Mâu thuẫn khi xếp mức:
 - **Nếu để "Tự làm":** Trải nghiệm khách hàng rất mượt mà lúc nửa đêm, mua được ngay thuốc hạ sốt, nước muối. Tuy nhiên, rủi ro y tế cực lớn: nếu AI gợi ý sai thuốc cho trẻ nhỏ (`S7`) hay người đang có cơn đau ngực cấp (`S8`), hậu quả là tử vong hoặc suy hô hấp không thể cứu vãn.
@@ -171,19 +169,19 @@ Nhóm phân loại 5 tool của Track T1 vào 3 mức độ tự chủ dựa tr�
 - **Nếu để "Cấm":** Chatbot bị phế truất thành một công cụ hỏi đáp lý thuyết, mất hoàn toàn giá trị chuyển đổi thương mại của Pharmacity.
 
 #### Ý kiến từng thành viên trong nhóm:
-- *Thành viên 1:* Kiên quyết đòi để **"Cần Dược sĩ duyệt 100%"** vì nguyên tắc tính mạng là số 1, sai một ca là cả chuỗi nhà thuốc đối mặt kiện tụng.
-- *Thành viên 2:* Đòi để **"Tự làm 100%"** vì bản chất khách tìm đến chat online lúc nửa đêm là để giải quyết nhanh, chờ người thì bot không có ý nghĩa.
-- *Thành viên 3:* Đề xuất giải pháp kiến trúc: **Tách tool theo Danh mục rủi ro (Risk-based Tool Splitting)**.
+- *Thành viên 1:* Nghĩ là nên để **"Cần dược sĩ duyệt mọi lúc"** vì nguyên tắc tính mạng là số 1, sai một ca là có nhiều hậu quả không xác định trước
+- *Thành viên 2:* Đề xuất **"AI tự quyết định gợi ý sản phẩm"** vì khách tìm đến chat online là để giải quyết nhanh, chờ người thì bot không có ý nghĩa
+- *Thành viên 3:* Đề xuất kết hợp phân luồng, AI phải phân biệt được trường hợp khẩn cấp/cần dược sĩ và trường hợp đơn giản, và thà cảnh báo nhầm/chuyển nhầm cho dược sĩ còn hơn là tự tin đưa ra gợi ý thuốc
 
 #### Cách nhóm chốt giải pháp: Tách `goi_y_san_pham` thành 2 nhánh mức tự chủ
 Nhóm quyết định bổ sung quy tắc an toàn y tế và phân tách cơ chế hoạt động của tool:
 1. **Nhánh 1 — Vật tư y tế & Chăm sóc thông thường (Bông băng, nước muối sinh lý, nhiệt kế, khẩu trang):**
-   - **Mức tự chủ:** **TỰ LÀM (Autonomous)**.
-   - AI tự động hiển thị danh thiếp sản phẩm và nút `[Mua ngay]`.
+   - **Mức tự chủ:** **TỰ LÀM**
+   - AI tự động hiển thị danh thiếp sản phẩm và nút `[Mua ngay]`
 2. **Nhánh 2 — Thuốc không kê đơn (OTC) có dược tính (Thuốc hạ sốt, siro ho, thuốc tiêu hóa...):**
-   - **Mức tự chủ:** **CẦN NGƯỜI DUYỆT (Quy trình xác nhận kép)**:
+   - **Mức tự chủ:** **CẦN NGƯỜI DUYỆT**:
      - *Với người lớn không có dấu hiệu nguy hiểm:* Khách hàng là người duyệt. Khách phải tích xác nhận vào Bảng kiểm tra an toàn 3 câu: `[ ] Dùng cho người trên 12 tuổi` `[ ] Không mang thai/cho con bú` `[ ] Không có tiền sử bệnh gan/thận`. Tích đủ thì nút Đặt hàng mới mở khóa.
-     - *Với đối tượng nhạy cảm (trẻ < 2 tuổi, bà bầu, người già, hoặc có dấu hiệu cấp cứu như S7, S8):* **AI KHÓA HOÀN TOÀN nút Mua**, chỉ được phép "Soạn sẵn phiếu tóm tắt" để Dược sĩ trực kiểm duyệt và tư vấn trực tiếp.
+     - *Với đối tượng nhạy cảm (trẻ < 2 tuổi, bà bầu, người già, hoặc có dấu hiệu cấp cứu như S7, S8):* **AI KHÓA HOÀN TOÀN nút Mua**, chỉ được phép "Soạn sẵn phiếu tóm tắt" để Dược sĩ trực kiểm duyệt và tư vấn trực tiếp
 
 ---
 
@@ -196,36 +194,81 @@ Nhóm kiểm chứng bộ mức tự chủ vừa thiết lập trên 3 câu hỏ
 
 #### Thử nghiệm 1: Kịch bản `S8` (Cơn đau thắt ngực 68 tuổi — Cấp cứu)
 - **Hành vi hệ thống:**
-  - `khuyen_di_kham` ở mức **Tự làm** → Ngay lập tức bật còi báo động đỏ, hiện nút gọi 115 trong 0.5 giây.
-  - `goi_y_san_pham` tự động bị **vô hiệu hóa hoàn toàn**, không hiển thị bất kỳ sản phẩm nào.
-  - `chuyen_duoc_si` ở mức **Tự làm** → Bắn ca khẩn cấp lên Dashboard Dược sĩ trưởng.
-- **Đánh giá 3 câu hỏi:** Cái sai bị chặn 100%; AI không làm liều; Người nhà không bị phân tâm bởi việc mua thuốc mà tập trung gọi cấp cứu ngay.
+  - `khuyen_di_kham` ở mức **Tự làm** → hiện ngay bong bóng đỏ có nút gọi 115
+  - `goi_y_san_pham` tự động bị **vô hiệu hóa hoàn toàn**, không hiển thị bất kỳ sản phẩm nào
+  - `chuyen_duoc_si` ở mức **Tự làm** → báo ca khẩn cấp lên Dashboard Dược sĩ **song song**, không tạo hàng chờ trước hướng dẫn 115
+- **Đánh giá 3 câu hỏi:** Cái sai bị chặn 100%; AI không làm liều, người nhà không bị phân tâm bởi việc mua thuốc
 
 #### Thử nghiệm 2: Kịch bản `S7` (Trẻ 6 tháng tuổi ho đờm, khò khè — Nguy hiểm)
 - **Hành vi hệ thống:**
   - Nhận diện tuổi 6 tháng (< 2 tuổi) → Nhánh 2 của `goi_y_san_pham` lập tức khóa nút Mua thuốc tự động.
-  - `chuyen_duoc_si` ở mức **Tự làm** → Tạo phiếu tóm tắt ca nhi và chuyển sang hàng chờ ưu tiên cao của Dược sĩ.
-- **Đánh giá 3 câu hỏi:** Ngăn chặn hoàn toàn việc bé bị ngộ độc siro ức chế hô hấp; AI không tự ý phán đoán; Khách được kết nối đúng chuyên môn y tế.
+  - `chuyen_duoc_si` ở mức **Tự làm** → Tạo phiếu tóm tắt ca nhi và báo dược sĩ song song, không đặt trước hướng dẫn gọi 115.
+- **Đánh giá 3 câu hỏi:** Ngăn chặn hoàn toàn việc gợi ý thuốc cho đối tượng ưu tiên : trẻ em, AI không tự ý phán đoán, Khách được kết nối đúng chuyên môn y tế.
 
 #### Thử nghiệm 3: Kịch bản bình thường (Khách nhắn: *"Nhà thuốc còn nước muối sinh lý Physiodose không ship cho mình 2 hộp"*):
 - **Hành vi hệ thống:**
-  - Nhận diện sản phẩm là Vật tư thông thường (Nhánh 1 của `goi_y_san_pham` - Tự làm).
-  - AI kiểm tra tồn kho và hiện ngay thẻ sản phẩm nước muối kèm nút `[Mua ngay]`.
-- **Đánh giá 3 câu hỏi:** Khách mua hàng thành công trong 10 giây; Không bắt khách phải chờ Dược sĩ duyệt vô lý; Trải nghiệm mua sắm mượt mà.
+  - Nhận diện sản phẩm là Vật tư thông thường (Nhánh 1 của `goi_y_san_pham` - Tự làm)
+  - Hiện thẻ sản phẩm nước muối kèm nút `[Mua ngay]` sau 6 giây
+- **Đánh giá 3 câu hỏi:** Khách mua hàng thành công trong 10 giây, Không bắt khách phải chờ Dược sĩ duyệt vô lý
 
 ---
-
-### 4. Thay đổi Lời hứa thương hiệu với Người dùng (Brand Promise Shift)
+### 4. Thay đổi lời hứa thương hiệu với người dùng
 
 Việc thiết lập các mức tự chủ trên đã thay đổi căn bản lời hứa của sản phẩm:
-- **Lời hứa cũ (Nguy hiểm / Thiếu thực tế):** *"AI thông minh có thể giải quyết mọi vấn đề thuốc men và mua sắm tức thì cho bạn 24/7."* → Lời hứa này tạo ra sự tin tưởng mù quáng (Over-trust), khiến người dùng ỷ lại vào AI trong các tình huống nguy kịch.
-- **Lời hứa mới (Minh bạch / Đáng tin cậy theo Google PAIR):** *"Pharmacity AI là Trợ lý phân luồng và sàng lọc an toàn: Giúp bạn mua sắm vật tư thiết yếu tức thì; đồng thời là lá chắn bảo vệ sức khỏe, kết nối Dược sĩ chuyên môn kiểm duyệt ngay khi bạn cần điều trị bệnh."*
+- **Lời hứa cũ (Nguy hiểm / Thiếu thực tế):** *"AI thông minh có thể giải quyết vấn đề thuốc men và mua sắm tức thì cho bạn 24/7."* → Lời hứa này tạo ra sự tin tưởng mù quáng vào hệ thống, khiến người dùng ỷ lại vào AI trong các tình huống nguy kịch.
+- **Lời hứa mới (Minh bạch / Đáng tin cậy theo Google PAIR):** *"Pharmacity AI không bao giờ chẩn đoán, kê đơn, hướng dẫn liều dùng cá nhân hay thay thế thuốc kê đơn. Mình giúp bạn mua vật tư thiết yếu tức thì, sàng lọc và chuyển yêu cầu đến đúng người: dược sĩ kiểm duyệt khi bạn cần điều trị bệnh, và khuyên gọi 115 khi có dấu hiệu nguy hiểm"*
 
-## §5. Prototype (Chặng 5 — Đang thực hiện)
-*(Phần này đang được dựng tương tác trong thư mục prototype/)*
+## §5. Prototype (Chặng 5)
 
-## §6. Tốt là gì (Chặng 6 — Đang thực hiện)
-*(3 tiêu chí Pass/Fail nghiệm thu)*
+**Link / file:** [prototype/index.html](prototype/index.html). Mở thẳng bằng trình duyệt
+- `index.html?s=S8`: ca cấp cứu (tab Khách hàng)
+- `index.html?tab=auto`: tab Mức tự chủ (§4)
 
-## §7. Demo (Chặng 7 — Đang thực hiện)
-*(Ghi nhận xử lý ca lạ tại buổi demo)*
+**Công cụ:** một file HTML, CSS và JavaScript thuần. Đề bài gợi ý React, TypeScript và Tailwind; nhóm không dùng vì không cần build và prototype chạy được ngay bằng cách bấm đúp file. Đây là chỗ nhóm chọn khác đề.
+
+**Phần nào mock:**
+- Toàn bộ dữ liệu: "Thuốc mẫu A", nước muối Physiodose, giá và tồn kho đều là dữ liệu giả, có ghi chú trên màn hình.
+- Phân loại tin nhắn bằng danh sách từ khóa và quy tắc cứng, **không có lời gọi AI thật**.
+- Nút "GỌI 115 NGAY" chỉ mô phỏng, không gọi điện.
+- Dược sĩ nhận ca, "Mua ngay", "Đặt hàng" chỉ đổi trạng thái trong trang, không gửi đi đâu.
+- Đồng hồ hiển thị là đồng hồ mô phỏng (bắt đầu 10:23:15), không phải giờ thật.
+
+**Ảnh chụp có đánh số** (chụp từ `prototype/index.html`, lưu trong `prototype/shots/`):
+
+**① `prototype/shots/anh1-s8-canh-bao.png`: S8, khung chat.**
+- Thể hiện: bong bóng đỏ "CẤP CỨU" với nút GỌI 115 NGAY ngay dưới câu chính; khối "Vì sao mình khuyên vậy?" (G11); khối "Mình là trợ lý AI" (G1); dòng báo dược sĩ đã được thông báo song song. Bên phải là nhật ký tool: `goi_y_san_pham: BLOCKED`, `khuyen_di_kham: EXECUTED`.
+- HAX/PAIR: **G1** (thanh G1 dưới tiêu đề và khối G1 trong bong bóng), **G11** (ba căn cứ trong khối "Vì sao"), **PAIR, đường lui cho lỗi** (nút 115 nằm ngay trong bong bóng, không phải một bước chờ).
+- Mức tự chủ: `khuyen_di_kham` **TỰ LÀM**; `goi_y_san_pham` **CẤM**, không có nút mua nào hiện ra.
+
+**② `prototype/shots/anh2-tab-muc-tu-chu.png`: tab Mức tự chủ (§4).**
+- Thể hiện: bảng 5 tool theo cost-of-error; `goi_y_san_pham` tách thành ba trạng thái. Nhánh 1 (vật tư) có nút "Mua ngay". Nhánh 2 (thuốc OTC, người lớn) có bảng kiểm 3 ô, nút "Đặt hàng" khóa cho đến khi tích đủ, ghi "Còn thiếu 3 ô". Nhóm nhạy cảm có nút "Mua (đã khóa)" và chỉ còn nút "Soạn phiếu tóm tắt cho dược sĩ".
+- HAX/PAIR: **G10** (thu hẹp: nhóm nhạy cảm không có đường tới nút mua); **PAIR, explainability** (mỗi mức ghi rõ lý do bằng cost-of-error).
+- Mức tự chủ: nhánh 1 **TỰ LÀM**; nhánh 2 **CẦN KHÁCH DUYỆT**; nhóm nhạy cảm **KHÓA**.
+
+**Quyết định: cách hiện độ chắc, bằng chứng và điều khiển mức tự chủ.**
+- *Độ chắc:* không hiện phần trăm chắc chắn mà thay vào đó là bằng chứng qua khối "Vì sao mình khuyên vậy?" để nêu thêm thông tin cho người dùng tham khảo và tin vào hệ thống hơn
+- Đã cân nhắc và loại: (a) hiện phần trăm độ chắc chắn của hệ thống, vì người dùng có thể thấy 80% là chưa chắc chắn, (b) chỉ hiện câu khuyên, không lập luận chi tiết rồi đưa ra kết luận vì dễ gây tin tưởng mù quáng
+- *Điều khiển mức tự chủ:* nút bị khóa thay vì hộp cảnh báo "Bạn có chắc không?". Lý do: hộp cảnh báo dễ bị bấm bỏ qua, nút không tồn tại thì không bấm được.
+
+## §6. Tốt là gì (Chặng 6)
+
+**Ba tiêu chí Pass/Fail, kiểm tra được không cần tranh luận:**
+- **C1 · Chặn đúng chỗ:** với S7 và S8, không có thẻ sản phẩm, nút "Mua" hay ô "Đặt hàng" nào trong khung chat. Pass nếu không có các phần tử đó.
+- **C2 · Hướng dẫn trước, không chờ:** bong bóng hướng dẫn gọi 115 hiện trong vòng 5 giây kể từ tin nhắn của khách, và không đứng sau hàng chờ dược sĩ. Pass nếu thời gian ≤ 5 giây.
+- **C3 · Không hỏi thừa, không bỏ sót:** với ca khẩn cấp, AI không hỏi lại trước khi có hướng dẫn 115 với ca bình thường (kịch bản N), thẻ sản phẩm hiện trong 15 giây và không hỏi thêm câu nào. Pass nếu cả hai điều kiện đúng.
+
+**Đạt được trên 2 kịch bản đắt nhất:** S8 và S7 đều đạt 3/3 câu khi chạy nút "Thử 1" và "Thử 2" trong tab §4. Thời gian đo được là 3 giây theo đồng hồ mô phỏng.
+
+**Lỗi còn lại:**
+1. Hệ thống có thể báo nhầm ở một vài trường hợp nếu nhận thấy trong câu có những từ khóa thuộc danh sách nguy hiểm, cần hỗ trợ, tạo ra nhiều yêu cầu đến dược sĩ hơn
+2. Có thể gây ức chế cho người dùng nếu bị chặn nhầm yêu cầu
+
+## §7. Demo
+
+**Ca lạ nhận được ở demo:**
+
+**Ca dự phòng đã chuẩn bị, để biết trước prototype sẽ làm gì:** "Mình hơi tức ngực từ chiều, có thuốc đau dạ dày nào không? Tối nay qua lấy." Prototype nhận ra "tức ngực" dù khách hỏi mua thuốc dạ dày, hiện bong bóng cảnh báo khẩn cấp với mức "urgent" (không phải "CẤP CỨU" như S8), không hiện sản phẩm nào, và báo dược sĩ song song
+
+**Prototype đã làm gì với ca lạ:** Phát hiện từ khóa tức ngực và hiện thông báo cần cấp cứu, đồng thời chuyển yêu cầu cho dược sĩ
+
+**Nhóm có đổi ý gì sau ca đó không:** nhóm em không đổi vì em thấy hệ thống phát hiện ra các từ khóa có thể liên quan đến các bệnh khác nếu có của người dùng và hệ thống nên cảnh báo nhầm (người dùng có thể tự quyết định đi đến bệnh viện, gọi 115 hoặc không), và gửi yêu cầu đến dược sĩ để dược sĩ xem xét và tư vấn thêm nếu thấy cần

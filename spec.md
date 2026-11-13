@@ -63,8 +63,79 @@ Cái giá của sự sai sót trong y tế được đo bằng **tính mạng co
 ## §3. Khi AI sai (Chặng 3 — Đang thực hiện)
 *(Phần này đang được cập nhật chi tiết theo thiết kế UX và nguyên tắc HAX/PAIR cho S7 và S8)*
 
-## §4. Mức tự chủ (Chặng 4 — Đang thực hiện)
-*(Phần này đang được cập nhật chi tiết theo phân loại 5 tool và Cost-of-error)*
+## §4. Mức tự chủ (Chặng 4 — Levels of Autonomy)
+
+### 1. Bảng mức tự chủ cho 5 tools theo Cost-of-Error
+
+Nhóm phân loại 5 tool của Track T1 vào 3 mức độ tự chủ dựa trên nguyên tắc: **Cái giá khi sai (Cost of Error), Khả năng hoàn tác (Reversibility), và Chi phí của sự chờ đợi (Cost of Delay)**.
+
+| Tool | Làm gì | Mức của nhóm | Sai thì ai chịu gì? | Đảo lại được không? | Chờ người thì mất gì? |
+|---|---|:---:|---|---|---|
+| `ban_thuoc_ke_don` | Bán thuốc kê đơn (ETC như kháng sinh, hạ áp...) | **CẤM** *(Prohibited)* | **Người bệnh:** Biến chứng nguy kịch, sốc phản vệ, kháng kháng sinh.<br>**Pharmacity:** Đình chỉ kinh doanh, chịu trách nhiệm hình sự theo Luật Dược 2016. | **KHÔNG:** Thuốc kê đơn uống vào cơ thể không thể thu hồi tác dụng sinh học. | Chờ đợi là **bắt buộc** theo luật y tế (bắt buộc phải có Bác sĩ kê đơn và Dược sĩ kiểm duyệt đơn). |
+| `khuyen_di_kham` | Hiện thông báo cảnh báo "đi khám, gọi cấp cứu 115 ngay" | **TỰ LÀM** *(Autonomous)* | Nếu AI cảnh báo thừa (False Alarm): Khách mất công đi viện, tốn phí khám nhưng bảo toàn tính mạng. Nếu AI chần chừ không cảnh báo: Người bệnh tử vong tại nhà. | **ĐƯỢC:** Khách có thể cân nhắc hoặc bác sĩ tại viện kết luận an toàn cho về. | **Mất tính mạng:** Trong cấp cứu tim mạch (`S8`) hoặc suy hô hấp (`S7`), chờ duyệt từng phút đồng nghĩa với hoại tử cơ tim hoặc ngừng thở. Cấm bắt thông báo cấp cứu phải chờ người duyệt. |
+| `chuyen_duoc_si` | Chuyển toàn bộ cuộc chat và tóm tắt ca sang Dược sĩ trực | **TỰ LÀM** *(Autonomous)* | Nếu chuyển nhầm ca nhẹ: Dược sĩ tốn 1–2 phút đọc lướt, hệ thống tăng tải nhẹ.<br>Nếu không chuyển ca khó: Bệnh nhân nhận tư vấn sai từ AI, nguy hiểm tính mạng. | **ĐƯỢC:** Dược sĩ tiếp nhận, phân luồng lại hoặc giải đáp nhanh chóng. | Chuyển tự động giúp ca bệnh được xếp hàng vào Dashboard của Dược sĩ sớm nhất, giảm thiểu thời gian chờ đợi lúc đêm muộn. |
+| `luu_ghi_chu_suc_khoe` | Lưu thông tin bệnh lý/tiền sử vào hồ sơ khách | **CẦN NGƯỜI DUYỆT** *(Người duyệt: Khách hàng)* | Nếu AI tự ý lưu: Vi phạm quyền riêng tư dữ liệu cá nhân nhạy cảm (Nghị định 13/2023/NĐ-CP), nguy cơ lưu nhầm bệnh của người thân vào hồ sơ tài khoản khách. | **KHÓ:** Xóa được trong cơ sở dữ liệu nhưng rủi ro lộ lọt thông tin riêng tư đã xảy ra ngay tại thời điểm ghi nhận trái phép. | Không mất gì, chỉ thêm 1 thao tác bấm nút `[Đồng ý lưu]` của khách. Mặc định quá hạn không chọn là **KHÔNG LƯU**. |
+| `goi_y_san_pham` | Gửi gợi ý sản phẩm kèm nút đặt mua | **CẦN DUYỆT & TÁCH BƯỚC** *(Xem phân tích chi tiết)* | Khách uống sai thuốc dẫn đến dị ứng, ngộ độc hoặc lỡ cơ hội điều trị đúng cách. | **KHÔNG:** Thuốc đã uống không thể hoàn tác. | Khách mua vật tư cơ bản (bông băng, nước muối) nửa đêm bị ức chế nếu bắt chờ Dược sĩ duyệt. |
+
+---
+
+### 2. Tool khó xếp nhất: `goi_y_san_pham` và Giải pháp Tách Tool
+
+#### Mâu thuẫn khi xếp mức:
+- **Nếu để "Tự làm":** Trải nghiệm khách hàng rất mượt mà lúc nửa đêm, mua được ngay thuốc hạ sốt, nước muối. Tuy nhiên, rủi ro y tế cực lớn: nếu AI gợi ý sai thuốc cho trẻ nhỏ (`S7`) hay người đang có cơn đau ngực cấp (`S8`), hậu quả là tử vong hoặc suy hô hấp không thể cứu vãn.
+- **Nếu để "Cần dược sĩ duyệt":** An toàn y tế tuyệt đối nhưng trải nghiệm vỡ vụn. Nửa đêm khách chỉ cần mua chai nước muối sinh lý hay hộp bông gạc mà phải chờ Dược sĩ trực ca đêm thức dậy duyệt 15–20 phút thì khách sẽ thoát app ngay.
+- **Nếu để "Cấm":** Chatbot bị phế truất thành một công cụ hỏi đáp lý thuyết, mất hoàn toàn giá trị chuyển đổi thương mại của Pharmacity.
+
+#### Ý kiến từng thành viên trong nhóm:
+- *Thành viên 1:* Kiên quyết đòi để **"Cần Dược sĩ duyệt 100%"** vì nguyên tắc tính mạng là số 1, sai một ca là cả chuỗi nhà thuốc đối mặt kiện tụng.
+- *Thành viên 2:* Đòi để **"Tự làm 100%"** vì bản chất khách tìm đến chat online lúc nửa đêm là để giải quyết nhanh, chờ người thì bot không có ý nghĩa.
+- *Thành viên 3:* Đề xuất giải pháp kiến trúc: **Tách tool theo Danh mục rủi ro (Risk-based Tool Splitting)**.
+
+#### Cách nhóm chốt giải pháp: Tách `goi_y_san_pham` thành 2 nhánh mức tự chủ
+Nhóm quyết định bổ sung quy tắc an toàn y tế và phân tách cơ chế hoạt động của tool:
+1. **Nhánh 1 — Vật tư y tế & Chăm sóc thông thường (Bông băng, nước muối sinh lý, nhiệt kế, khẩu trang):**
+   - **Mức tự chủ:** **TỰ LÀM (Autonomous)**.
+   - AI tự động hiển thị danh thiếp sản phẩm và nút `[Mua ngay]`.
+2. **Nhánh 2 — Thuốc không kê đơn (OTC) có dược tính (Thuốc hạ sốt, siro ho, thuốc tiêu hóa...):**
+   - **Mức tự chủ:** **CẦN NGƯỜI DUYỆT (Quy trình xác nhận kép)**:
+     - *Với người lớn không có dấu hiệu nguy hiểm:* Khách hàng là người duyệt. Khách phải tích xác nhận vào Bảng kiểm tra an toàn 3 câu: `[ ] Dùng cho người trên 12 tuổi` `[ ] Không mang thai/cho con bú` `[ ] Không có tiền sử bệnh gan/thận`. Tích đủ thì nút Đặt hàng mới mở khóa.
+     - *Với đối tượng nhạy cảm (trẻ < 2 tuổi, bà bầu, người già, hoặc có dấu hiệu cấp cứu như S7, S8):* **AI KHÓA HOÀN TOÀN nút Mua**, chỉ được phép "Soạn sẵn phiếu tóm tắt" để Dược sĩ trực kiểm duyệt và tư vấn trực tiếp.
+
+---
+
+### 3. Thử nghiệm mức tự chủ trên 3 kịch bản
+
+Nhóm kiểm chứng bộ mức tự chủ vừa thiết lập trên 3 câu hỏi kiểm tra:
+1. *Cái sai ở Chặng 2 có bị chặn không?*
+2. *Có việc nào AI vẫn làm khi lẽ ra phải hỏi không?*
+3. *Người dùng bình thường có phải chờ đợi vô ích không?*
+
+#### Thử nghiệm 1: Kịch bản `S8` (Cơn đau thắt ngực 68 tuổi — Cấp cứu)
+- **Hành vi hệ thống:**
+  - `khuyen_di_kham` ở mức **Tự làm** → Ngay lập tức bật còi báo động đỏ, hiện nút gọi 115 trong 0.5 giây.
+  - `goi_y_san_pham` tự động bị **vô hiệu hóa hoàn toàn**, không hiển thị bất kỳ sản phẩm nào.
+  - `chuyen_duoc_si` ở mức **Tự làm** → Bắn ca khẩn cấp lên Dashboard Dược sĩ trưởng.
+- **Đánh giá 3 câu hỏi:** Cái sai bị chặn 100%; AI không làm liều; Người nhà không bị phân tâm bởi việc mua thuốc mà tập trung gọi cấp cứu ngay.
+
+#### Thử nghiệm 2: Kịch bản `S7` (Trẻ 6 tháng tuổi ho đờm, khò khè — Nguy hiểm)
+- **Hành vi hệ thống:**
+  - Nhận diện tuổi 6 tháng (< 2 tuổi) → Nhánh 2 của `goi_y_san_pham` lập tức khóa nút Mua thuốc tự động.
+  - `chuyen_duoc_si` ở mức **Tự làm** → Tạo phiếu tóm tắt ca nhi và chuyển sang hàng chờ ưu tiên cao của Dược sĩ.
+- **Đánh giá 3 câu hỏi:** Ngăn chặn hoàn toàn việc bé bị ngộ độc siro ức chế hô hấp; AI không tự ý phán đoán; Khách được kết nối đúng chuyên môn y tế.
+
+#### Thử nghiệm 3: Kịch bản bình thường (Khách nhắn: *"Nhà thuốc còn nước muối sinh lý Physiodose không ship cho mình 2 hộp"*):
+- **Hành vi hệ thống:**
+  - Nhận diện sản phẩm là Vật tư thông thường (Nhánh 1 của `goi_y_san_pham` - Tự làm).
+  - AI kiểm tra tồn kho và hiện ngay thẻ sản phẩm nước muối kèm nút `[Mua ngay]`.
+- **Đánh giá 3 câu hỏi:** Khách mua hàng thành công trong 10 giây; Không bắt khách phải chờ Dược sĩ duyệt vô lý; Trải nghiệm mua sắm mượt mà.
+
+---
+
+### 4. Thay đổi Lời hứa thương hiệu với Người dùng (Brand Promise Shift)
+
+Việc thiết lập các mức tự chủ trên đã thay đổi căn bản lời hứa của sản phẩm:
+- **Lời hứa cũ (Nguy hiểm / Thiếu thực tế):** *"AI thông minh có thể giải quyết mọi vấn đề thuốc men và mua sắm tức thì cho bạn 24/7."* → Lời hứa này tạo ra sự tin tưởng mù quáng (Over-trust), khiến người dùng ỷ lại vào AI trong các tình huống nguy kịch.
+- **Lời hứa mới (Minh bạch / Đáng tin cậy theo Google PAIR):** *"Pharmacity AI là Trợ lý phân luồng và sàng lọc an toàn: Giúp bạn mua sắm vật tư thiết yếu tức thì; đồng thời là lá chắn bảo vệ sức khỏe, kết nối Dược sĩ chuyên môn kiểm duyệt ngay khi bạn cần điều trị bệnh."*
 
 ## §5. Prototype (Chặng 5 — Đang thực hiện)
 *(Phần này đang được dựng tương tác trong thư mục prototype/)*
